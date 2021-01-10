@@ -30,7 +30,6 @@ def search(request):
         full_search=SearchQuery(query),
         elections=election,
     )
-    print(all_items)
     context['all_items'] = all_items
     context['all_items_count'] = all_items.count()
     context['query'] = query
@@ -166,6 +165,9 @@ def candidato_2021(request, dni):
                                     context['ingresos'].decOtroIngresoPrivado
     context['sentencias_penal'] = person.sentenciapenal_set.all()
     context['sentencias_obliga'] = person.sentenciaobliga_set.all()
+    context['compiled_person'] = CompiledPerson.objects.get(
+        person=person
+    )
     return render(
         request,
         'votes/candidate.html',

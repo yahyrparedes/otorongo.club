@@ -15,6 +15,10 @@ COPY requirements/base.txt /pip_requirements/base.txt
 COPY .env /code/.env
 RUN pip install -r /pip_requirements/base.txt
 
+RUN /usr/sbin/service cron start
+COPY docker/cron/setup_tweeting_candidates.sh /tmp/setup_tweeting_candidates
+RUN bash /tmp/setup_tweeting_candidates.sh
+
 RUN mkdir -p /code
 WORKDIR /code
 

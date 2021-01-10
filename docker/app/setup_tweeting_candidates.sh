@@ -1,0 +1,5 @@
+if ! crontab -l | grep -q 'send_tweet'; then
+  echo 'entry does not exist'
+  (crontab -l 2>/dev/null; echo "20,40,59 12-23/1 * * * /usr/local/bin/python /code/manage.py send_tweet --settings=otorongo.settings.production") | crontab -
+  (crontab -l 2>/dev/null; echo "20,40,59 1-4/1 * * * /usr/local/bin/python /code/manage.py send_tweet --settings=otorongo.settings.production") | crontab -
+fi

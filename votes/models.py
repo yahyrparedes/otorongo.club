@@ -234,6 +234,7 @@ class EduUniversitaria(models.Model):
     strUsuario = models.TextField(null=True, blank=True)
     strMetodoAccion = models.TextField(null=True, blank=True)
     strOrder = models.TextField(null=True, blank=True)
+    strComentario = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return f"{self.idHojaVida.id} {self.strUniversidad} {self.strCarreraUni}"
