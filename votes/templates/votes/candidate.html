@@ -17,7 +17,10 @@
 
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">Datos personales</h5>
+          <h5 class="card-title">
+            <i class="fas fa-user"></i>
+            Datos personales
+          </h5>
           <img
             src="data:image/png;base64, {{ candidate.photo.image }}"
             alt="Foto"
@@ -30,20 +33,29 @@
           Fecha de nacimiento: {{ candidate.strFechaNacimiento }} <br/>
           <br/>
 
-          <h6>Lugar de Nacimiento:</h6>
+          <h6>
+            <i class="fas fa-baby"></i>
+            Lugar de Nacimiento:
+          </h6>
           País: {{ candidate.strPaisNacimiento }} <br/>
           Departamento: {{ candidate.strNaciDepartamento }} <br/>
           Provincia: {{ candidate.strNaciProvincia }} <br/>
           Distrito: {{ candidate.strNaciDistrito }} <br/>
           <br/>
 
-          <h6>Lugar de Domicilio:</h6>
+          <h6>
+            <i class="fas fa-house-user"></i>
+            Lugar de Domicilio:
+          </h6>
           Departamento: {{ candidate.strDomiDepartamento }} <br/>
           Provincia: {{ candidate.strDomiProvincia }} <br/>
           Distrito: {{ candidate.strDomiDistrito }} <br/>
           <br/>
 
-          <h6>Organización Política al que Postula:</h6>
+          <h5>
+            <i class="fab fa-old-republic"></i>
+            Organización Política al que Postula:
+          </h5>
             {{ candidate.strOrganizacionPolitica }}
           <br/>
 
@@ -52,7 +64,10 @@
 
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">Formación Académica Universitaria</h5>
+          <h5 class="card-title">
+            <i class="fas fa-university"></i>
+            Formación Académica Universitaria
+          </h5>
           <ol>
             {% for item in  candidate.eduuniversitaria_set.all %}
               <li>
@@ -75,7 +90,45 @@
 
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">Sentencias condenatorias firmes impuestas por delitos dolosos</h5>
+          <h5 class="card-title">
+            <i class="fas fa-user-graduate"></i>
+            Estudios de postgrado
+          </h5>
+          <ol>
+            {% for item in  candidate.eduposgrado_set.all %}
+              <li>
+                {{ item.strCenEstudioPosgrado }} -
+                {{ item.strEspecialidadPosgrado }} -
+
+                {% if item.strEsMaestro == '1' %}
+                  Maestría -
+                {% endif %}
+
+                {% if item.strEsDoctor == '1' %}
+                  Doctorado -
+                {% endif %}
+
+                {{ item.strAnioPosgrado }}
+
+                {% if item.strComentario %}
+                  - {{ item.strComentario }}
+                {% endif %}
+
+                {% if item.strConcluidoPosgrado != '1' %}
+                  - Inconcluso.
+                {% endif %}
+              </li>
+            {% endfor %}
+          </ol>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">
+            <i class="fas fa-balance-scale"></i>
+            Sentencias condenatorias firmes impuestas por delitos dolosos
+          </h5>
           <div class="table-responsive">
             <table class="table table-striped">
               <thead>
@@ -112,6 +165,7 @@
       <div class="card">
         <div class="card-body">
           <h5 class="card-title">
+            <i class="fas fa-balance-scale"></i>
             Sentencias que declaren fundadas por incumplimiento de obligaciones alimentarias,
             contractuales, laborales o por incurrir en violencia familiar, que hubieran quedado firmes.
           </h5>
@@ -142,7 +196,10 @@
 
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">DECLARACIÓN JURADA DE INGRESOS DE BIENES Y RENTAS</h5>
+          <h5 class="card-title">
+            <i class="far fa-money-bill-alt"></i>
+            DECLARACIÓN JURADA DE INGRESOS DE BIENES Y RENTAS
+          </h5>
           <div class="table-responsive">
             <table class="table table-striped">
               <thead>
@@ -178,7 +235,10 @@
 
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">Bienes Inmuebles del Declarante y Sociedad de Gananciales</h5>
+          <h5 class="card-title">
+            <i class="fas fa-building"></i>
+            Bienes Inmuebles del Declarante y Sociedad de Gananciales
+          </h5>
           <h6>Inmuebles. Total: S/. {{ compiled_person.inmuebles|intcomma }}</h6>
           <div class="table-responsive">
             <table class="table table-striped">
@@ -205,7 +265,10 @@
 
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">Bienes Muebles del Declarante y Sociedad de Gananciales</h5>
+          <h5 class="card-title">
+            <i class="fas fa-car"></i>
+            Bienes Muebles del Declarante y Sociedad de Gananciales
+          </h5>
           <h6>Muebles. Total: S/. {{ compiled_person.muebles|intcomma }}</h6>
           <div class="table-responsive">
             <table class="table table-striped">

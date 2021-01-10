@@ -350,6 +350,7 @@ class EduPosgrado(models.Model):
     strEsDoctor = models.TextField(null=True, blank=True)
     strAnioPosgrado = models.TextField(null=True, blank=True)
     strUsuario = models.TextField(null=True, blank=True)
+    strComentario = models.TextField(null=True, blank=True)
 
 
 class SentenciaPenal(models.Model):
