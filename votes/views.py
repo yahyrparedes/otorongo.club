@@ -30,7 +30,6 @@ def search(request):
         full_search=SearchQuery(query),
         elections=election,
     )
-    print(all_items)
     context['all_items'] = all_items
     context['all_items_count'] = all_items.count()
     context['query'] = query

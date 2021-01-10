@@ -4,7 +4,7 @@ from django.core.management.base import BaseCommand
 import requests
 
 from votes.models import Person, Elections, SentenciaPenal, SentenciaObliga, Department, Expediente, \
-    HojaVida, BienInmueble, BienMueble
+    HojaVida, BienInmueble, BienMueble, EduUniversitaria
 
 
 class Command(BaseCommand):
@@ -31,7 +31,8 @@ class Command(BaseCommand):
                             help='update_candidate_sentencia_penal')
         parser.add_argument('-ucso', '--update_candidate_sentencia_obliga', action='store_true',
                             help='update_candidate_sentencia_obliga')
-
+        parser.add_argument('-ceduuniv', '--crawl_edu_universitaria', action='store_true',
+                            help='crawl_edu_universitaria')
 
     def handle(self, *args, **options):
         if options.get("crawl_lists_candidates"):
@@ -54,6 +55,8 @@ class Command(BaseCommand):
             update_candidate_sentencia_penal()
         elif options.get("update_candidate_sentencia_obliga"):
             update_candidate_sentencia_obliga()
+        elif options.get("crawl_edu_universitaria"):
+            crawl_edu_universitaria()
 
 
 def crawl_lists_candidates():
@@ -212,6 +215,42 @@ def update_candidate_sentencia_penal():
             obj.person = candidate
             obj.idHojaVida = candidate.idHojaVida
             obj.election = election
+            obj.save()
+
+            if created:
+                print(f"created {obj}")
+            else:
+                print(f"updated {obj}")
+
+
+def crawl_edu_universitaria():
+    # "https://plataformaelectoral.jne.gob.pe/HojaVida/GetAllHVEduUniversitaria?Ids=133572-0-ASC"
+    base_url = "https://plataformaelectoral.jne.gob.pe/HojaVida/GetAllHVEduUniversitaria?Ids="
+    election = Elections.objects.get(name='Elecciones Generales 2021')
+    candidates = Person.objects.filter(elections=election)
+    candidates_count = candidates.count()
+
+    i = 1
+    for candidate in candidates:
+        print(f"doing candidate {i}/{candidates_count}")
+        i += 1
+        id_hoja_de_vida = candidate.idHojaVida.idHojaVida
+        url = f"{base_url}{id_hoja_de_vida}-0-ASC"
+        res = requests.get(url)
+        data = res.json()
+        items = data.get("data")
+
+        for item in items:
+            if item.get("strTengoEduUniversitaria") == "2":
+                continue
+            obj_id = item["idHVEduUniversitaria"]
+            item.pop("idHVEduUniversitaria")
+            item["idHojaVida"] = candidate.idHojaVida
+            obj, created = EduUniversitaria.objects.update_or_create(
+                idHVEduUniversitaria=obj_id,
+                defaults=item,
+            )
+            obj.person = candidate
             obj.save()
 
             if created:

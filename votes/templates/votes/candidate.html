@@ -52,6 +52,29 @@
 
       <div class="card">
         <div class="card-body">
+          <h5 class="card-title">Formación Académica Universitaria</h5>
+          <ol>
+            {% for item in  candidate.eduuniversitaria_set.all %}
+              <li>
+                {{ item.strUniversidad }} -
+                {{ item.strCarreraUni }} -
+                {{ item.strAnioBachiller }}
+
+                {% if item.strComentario %}
+                  - {{ item.strComentario }}
+                {% endif %}
+
+                {% if item.strConcluidoEduUni != '1' %}
+                  - Inconcluso.
+                {% endif %}
+              </li>
+            {% endfor %}
+          </ol>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
           <h5 class="card-title">Sentencias condenatorias firmes impuestas por delitos dolosos</h5>
           <div class="table-responsive">
             <table class="table table-striped">
