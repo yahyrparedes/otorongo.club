@@ -38,8 +38,8 @@ def tweet(compiled_person):
         f'Candidato(a): {compiled_person.person.last_names} {compiled_person.person.first_names} '
         f'(DNI: {compiled_person.person.dni_number})\n '
         f'{compiled_person.person.strOrganizacionPolitica} \n\n'
-        f'Declaró {compiled_person.sentencias_penales} sentencias penales y '
-        f'{compiled_person.sentencias_obliga} sentencias de obligaciones. \n\n'
+        f'Declaró {compiled_person.sentencias_penales} antecedentes penales y '
+        f'{compiled_person.sentencias_obliga} antecedentes de obligaciones. \n\n'
         'Info descargada de la web del JNE.\nVer más en '
         f'https://otorongo.club/2021/candidato/{compiled_person.person.dni_number}/ '
     )
