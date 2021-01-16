@@ -8,6 +8,16 @@
 {% block content %}
   <h3>Lista de organizaciones políticas que postulan a elecciones generales 2021 ordenados por número de sentencias declaradas</h3>
 
+  <form
+    action="/2021/partidos/sentencias"
+    method="get"
+    role="filter"
+    class="form-inline mb-0"
+  >
+  {% include 'votes/regiones.html' %}
+  </form>
+
+
   <div class="table-responsive">
     <table class="table table-striped">
       <thead>

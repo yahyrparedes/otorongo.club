@@ -59,6 +59,17 @@
             {{ candidate.strOrganizacionPolitica }}
           <br/>
 
+          {% if candidate.strPostulaDistrito != ' ' %}
+            <br/>
+            <h5>
+              <i class="fas fa-map-marked-alt"></i>
+              Postula por la región:
+            </h5>
+            {{ candidate.strPostulaDistrito }}
+            <br/>
+          {% endif %}
+          Postula a cargo: {{ candidate.strCargoEleccion }}
+
         </div>
       </div>
 
@@ -114,7 +125,7 @@
                   - {{ item.strComentario }}
                 {% endif %}
 
-                {% if item.strConcluidoPosgrado != '1' %}
+                {% if item.strConcluidoPosgrado == '2' %}
                   - Inconcluso.
                 {% endif %}
               </li>
