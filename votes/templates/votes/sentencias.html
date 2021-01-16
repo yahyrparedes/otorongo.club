@@ -8,6 +8,15 @@
 {% block content %}
   <h3>Lista de candidatos a elecciones generales 2021 ordenados por número de antecedentes declarados</h3>
 
+  <form
+    action="/2021/sentencias/{{ org_id }}/"
+    method="get"
+    role="filter"
+    class="form-inline mb-0"
+  >
+    {% include 'votes/regiones.html' %}
+  </form>
+
   {% if org_name %}
     <h4>
       Mostrando: {{ org_name }}

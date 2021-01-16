@@ -2,14 +2,14 @@
 <html lang="es" xmlns="http://www.w3.org/1999/html">
 <head>
   <!-- Global site tag (gtag.js) - Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-SX6TGLPNR8"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-SX6TGLPNR8');
-  </script>
+{#  <script async src="https://www.googletagmanager.com/gtag/js?id=G-SX6TGLPNR8"></script>#}
+{#  <script>#}
+{#    window.dataLayer = window.dataLayer || [];#}
+{#    function gtag(){dataLayer.push(arguments);}#}
+{#    gtag('js', new Date());#}
+{##}
+{#    gtag('config', 'G-SX6TGLPNR8');#}
+{#  </script>#}
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -44,27 +44,27 @@
         <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
       </li>
     </ul>
-     <form
-       action="/search"
-       method="get"
-       role="search"
-       class="form-inline mb-0"
-     >
-       <input
-         class="form-control mr-sm-2"
-         type="search"
-         id="query"
-         name="q"
-         placeholder="Busca por nombre o DNI"
-         aria-label="Search"
-         style="width: 250px;"
-         autofocus
-       >
-       <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
-         <i class="fa fa-search"></i>
-         Buscar
-       </button>
-     </form>
+  <form
+    action="/search"
+    method="get"
+    role="search"
+    class="form-inline mb-0"
+  >
+    <input
+      class="form-control mr-sm-2"
+      type="search"
+      id="query"
+      name="q"
+      placeholder="Busca por nombre o DNI"
+      aria-label="Search"
+      style="width: 250px;"
+      autofocus
+    >
+    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+      <i class="fa fa-search"></i>
+      Buscar
+    </button>
+  </form>
 
 </nav>
 

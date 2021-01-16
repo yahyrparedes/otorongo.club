@@ -177,6 +177,7 @@ class CompiledOrg(models.Model):
     total_sentencia_penal = models.IntegerField(null=True, default=0)
     total_sentencia_obliga = models.IntegerField(null=True, default=0)
     total_sentencias = models.IntegerField(null=True, default=0)
+    postula_distrito = models.TextField(null=True, db_index=True)
 
 
 class CompiledPerson(models.Model):
