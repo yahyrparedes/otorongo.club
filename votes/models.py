@@ -255,13 +255,13 @@ class EduBasica(models.Model):
 
     @property
     def tiene_primaria(self):
-        completed = 'Completa' if self.strConcluidoEduPrimaria == "1" else "Incompleta"
-        return f'Si - {completed}' if self.strEduPrimaria == "1" else 'No'
+        completed = 'Completa' if self.strConcluidoEduPrimaria == "1" else "Inconclusa"
+        return f'Sí - {completed}' if self.strEduPrimaria == "1" else 'No'
     
     @property
     def tiene_secundaria(self):
-        completed = 'Completa' if self.strConcluidoEduSecundaria == "1" else "Incompleta"
-        return f'Si - {completed}' if self.strEduSecundaria == "1" else 'No'
+        completed = 'Completa' if self.strConcluidoEduSecundaria == "1" else "Inconclusa"
+        return f'Sí - {completed}' if self.strEduSecundaria == "1" else 'No'
 
     def __str__(self):
         return f"{self.idHojaVida.id}"
