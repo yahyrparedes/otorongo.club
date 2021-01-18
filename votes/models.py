@@ -253,6 +253,16 @@ class EduBasica(models.Model):
     strConcluidoEduSecundaria = models.TextField(null=True, blank=True)
     strUsuario = models.TextField(null=True, blank=True)
 
+    @property
+    def tiene_primaria(self):
+        completed = 'Completa' if self.strConcluidoEduPrimaria == "1" else "Incompleta"
+        return f'Si - {completed}' if self.strEduPrimaria == "1" else 'No'
+    
+    @property
+    def tiene_secundaria(self):
+        completed = 'Completa' if self.strConcluidoEduSecundaria == "1" else "Incompleta"
+        return f'Si - {completed}' if self.strEduSecundaria == "1" else 'No'
+
     def __str__(self):
         return f"{self.idHojaVida.id}"
 
@@ -270,6 +280,16 @@ class EduNoUniversitaria(models.Model):
     strConcluidoNoUni = models.TextField(null=True, blank=True)
     strUsuario = models.TextField(null=True, blank=True)
 
+    @property
+    def tiene_educacion_no_universitaria(self):
+        if self.strTengoNoUniversitaria == "1":
+            value = f"{self.strCarreraNoUni} - {self.strCentroEstudioNoUni}"
+            if self.strConcluidoNoUni != "1":
+                value = f"{value} - Inconcluso"
+            return value
+        else:
+            return "No tiene"
+
     def __str__(self):
         return f"{self.idHojaVida.id} {self.strCentroEstudioNoUni}"
 
@@ -286,6 +306,16 @@ class EduTecnica(models.Model):
     strConcluidoEduTecnico = models.TextField(null=True, blank=True)
     strUsuario = models.TextField(null=True, blank=True)
 
+    @property
+    def tiene_educacion_tecnica(self):
+        if self.strTengoEduTecnico == "1":
+            value = f"{self.strCarreraTecnico} - {self.strCenEstudioTecnico}"
+            if self.strConcluidoEduTecnico != "1":
+                value = f"{value} - Inconcluso"
+            return value
+        else:
+            return "No tiene"
+
 
 class InfoAdicional(models.Model):
     election = models.ForeignKey(Elections, null=True, on_delete=SET_NULL)
@@ -296,6 +326,13 @@ class InfoAdicional(models.Model):
     strTengoInfoAdicional = models.TextField(null=True, blank=True)
     strInfoAdicional = models.TextField(null=True, blank=True)
     strUsuario = models.TextField(null=True, blank=True)
+
+    @property
+    def tiene_informacion_adicional(self):
+        if self.strTengoInfoAdicional == "1":
+            return self.strInfoAdicional
+        else:
+            return "No tiene"
 
 
 class Anotacion(models.Model):
