@@ -13,9 +13,9 @@ class Command(BaseCommand):
 
 def process():
     print("processing")
-    # process_ingresos()
-    # process_bienes()
-    # process_sentencias()
+    process_ingresos()
+    process_bienes()
+    process_sentencias()
     process_partidos()
 
 
