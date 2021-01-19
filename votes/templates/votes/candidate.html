@@ -59,7 +59,16 @@
               {{ candidate.strOrganizacionPolitica }}
             <br/>
 
-          </div>
+          {% if candidate.strPostulaDistrito != ' ' %}
+            <br/>
+            <h5>
+              <i class="fas fa-map-marked-alt"></i>
+              Postula por la región:
+            </h5>
+            {{ candidate.strPostulaDistrito }}
+            <br/>
+          {% endif %}
+
         </div>
 
         <div class="card">
@@ -130,9 +139,14 @@
                     Maestría -
                   {% endif %}
 
-                  {% if item.strEsDoctor == '1' %}
-                    Doctorado -
-                  {% endif %}
+                {% if item.strConcluidoPosgrado == '2' %}
+                  - Inconcluso.
+                {% endif %}
+                </li>
+              {% endfor %}
+            </ol>
+          </div>
+        </div>
 
                   {{ item.strAnioPosgrado }}
 

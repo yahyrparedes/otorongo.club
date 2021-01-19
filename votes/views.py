@@ -63,19 +63,26 @@ def ingresos_2021(request):
 
 
 def sentencias_2021(request, org_id = None):
+    region = request.GET.get('region')
     context, election = make_context()
     persons = CompiledPerson.objects.filter(
         person__elections=election,
     ).order_by('-sentencias_total')
 
+    if region and region == 'TODAS':
+        pass
+    elif region:
+        persons = persons.filter(person__strPostulaDistrito=region)
+
     if org_id:
         persons = persons.filter(person__idOrganizacionPolitica=org_id)
-        org = CompiledOrg.objects.get(idOrganizacionPolitica=org_id)
+        org = CompiledOrg.objects.filter(idOrganizacionPolitica=org_id).first()
         context['org_name'] = org.name
 
     paginator, page = do_pagination(request, persons)
     context['candidates'] = paginator
     context['page'] = page
+    context['org_id'] = org_id
 
     return render(
         request,
@@ -111,8 +118,17 @@ def make_context():
 
 
 def partidos_sentencias_2021(request):
+    region = request.GET.get('region')
     context, election = make_context()
-    context['orgs'] = CompiledOrg.objects.all().order_by('-total_sentencias')
+    orgs = CompiledOrg.objects.all().order_by('-total_sentencias')
+
+    if region and region == 'TODAS':
+        orgs = orgs.filter(postula_distrito__isnull=True)
+    elif region:
+        orgs = orgs.filter(postula_distrito=region)
+
+    context['orgs'] = orgs
+    context['region'] = region
     return render(
         request,
         'votes/partido_sentencias.html',

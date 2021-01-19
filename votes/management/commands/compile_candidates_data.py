@@ -13,10 +13,11 @@ class Command(BaseCommand):
 
 def process():
     print("processing")
-    process_ingresos()
-    process_bienes()
-    process_sentencias()
-    process_partidos()
+    # process_ingresos()
+    # process_bienes()
+    # process_sentencias()
+    # process_partidos()
+    process_partidos_por_region()
 
 
 def process_partidos():
@@ -27,6 +28,28 @@ def process_partidos():
     for person in Person.objects.filter(elections=election):
         compiled_org, created = CompiledOrg.objects.get_or_create(
             name=person.strOrganizacionPolitica,
+            idOrganizacionPolitica=person.idOrganizacionPolitica,
+        )
+        if created:
+            print(f'created {compiled_org}')
+
+        compiled_org.total_sentencia_penal += person.sentenciapenal_set.all().count()
+        compiled_org.total_sentencia_obliga += person.sentenciaobliga_set.all().count()
+        compiled_org.total_sentencias = compiled_org.total_sentencia_penal + \
+                                        compiled_org.total_sentencia_obliga
+        compiled_org.save()
+
+
+def process_partidos_por_region():
+    """Generate an aggregate of antecedentes per org politica per region"""
+    # sentencias
+    election = Elections.objects.get(
+        name='Elecciones Generales 2021'
+    )
+    for person in Person.objects.filter(elections=election):
+        compiled_org, created = CompiledOrg.objects.get_or_create(
+            name=person.strOrganizacionPolitica,
+            postula_distrito=person.strPostulaDistrito,
             idOrganizacionPolitica=person.idOrganizacionPolitica,
         )
         if created:
