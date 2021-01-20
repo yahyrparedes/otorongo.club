@@ -131,34 +131,35 @@
             </h5>
             <ol>
               {% for item in  candidate.eduposgrado_set.all %}
-                <li>
-                  {{ item.strCenEstudioPosgrado }} -
-                  {{ item.strEspecialidadPosgrado }} -
+              <li>
+                {{ item.strCenEstudioPosgrado }} -
+                {{ item.strEspecialidadPosgrado }} -
 
-                  {% if item.strEsMaestro == '1' %}
-                    Maestría -
-                  {% endif %}
+                {% if item.strEsMaestro == '1' %}
+                  Maestría -
+                {% endif %}
+
+                {% if item.strEsDoctor == '1' %}
+                  Doctorado -
+                {% endif %}
+
+                {{ item.strAnioPosgrado }}
+
+                {% if item.strComentario %}
+                  - {{ item.strComentario }}
+                {% endif %}
 
                 {% if item.strConcluidoPosgrado == '2' %}
                   - Inconcluso.
                 {% endif %}
-                </li>
-              {% endfor %}
+              </li>
+            {% endfor %}
             </ol>
           </div>
         </div>
 
-                  {{ item.strAnioPosgrado }}
-
-                  {% if item.strComentario %}
-                    - {{ item.strComentario }}
-                  {% endif %}
-
-                  {% if item.strConcluidoPosgrado != '1' %}
-                    - Inconcluso.
-                  {% endif %}
+                  
                 </li>
-              {% endfor %}
             </ol>
           </div>
         </div>
