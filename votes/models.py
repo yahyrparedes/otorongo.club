@@ -527,3 +527,30 @@ class VoteEvent(models.Model):
     vote_projects = models.ManyToManyField(ProjectLaw)
     person = models.ForeignKey(Person, null=True, on_delete=SET_NULL)
     vote = models.ForeignKey(Vote, null=True, on_delete=SET_NULL)
+
+
+class CargoEleccion(models.Model):
+    election = models.ForeignKey(Elections, null=True, on_delete=SET_NULL)
+    person = models.ForeignKey(Person, null=True, on_delete=SET_NULL)
+    idHojaVida = models.ForeignKey(HojaVida, null=True, blank=True,
+                                    on_delete=models.SET_NULL)
+    idHVCargoEleccion = models.IntegerField(null=True, blank=True,
+                                            unique=True)
+    strCargoEleccion = models.CharField(max_length=5, blank=True, null=True)
+    intItemCargoEleccion = models.PositiveSmallIntegerField(blank=True,
+                                                            null=True)
+    idOrgPolCargoElec = models.IntegerField(blank=True, null=True)
+    strOrgPolCargoElec = models.TextField(blank=True, null=True)
+    strAnioCargoElecDesde = models.CharField(max_length=5, blank=True,
+                                                null=True)
+    strAnioCargoElecHasta = models.CharField(max_length=5, blank=True,
+                                                null=True)
+    idEstado = models.PositiveSmallIntegerField(blank=True, null=True)
+    strUsuario = models.TextField(blank=True, null=True)
+    idCargoEleccion = models.IntegerField(blank=True, null=True)
+    strCargoEleccion2 = models.TextField(blank=True, null=True)
+    strOrder = models.TextField(blank=True, null=True)
+    strComentario = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return f'{self.person} - {self.strOrgPolCargoElec}'
