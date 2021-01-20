@@ -523,9 +523,9 @@ def update_candidate_bien_mueble():
             obj.person = candidate
             obj.election = election
             obj.idHojaVida = candidate.idHojaVida
+            obj.save()
 
             if created:
                 print(f"created {obj}")
             else:
                 print(f"updated {obj}")
-
