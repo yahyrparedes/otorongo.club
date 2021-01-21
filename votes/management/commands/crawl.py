@@ -3,9 +3,11 @@ from time import sleep
 from django.core.management.base import BaseCommand
 import requests
 
-from votes.models import Person, Elections, SentenciaPenal, SentenciaObliga, Department, Expediente, \
-    HojaVida, BienInmueble, BienMueble, EduUniversitaria, EduPosgrado, EduBasica, EduNoUniversitaria, \
-    EduTecnica, InfoAdicional, CargoEleccion
+from votes.models import (Person, Elections, SentenciaPenal, SentenciaObliga,
+                            Department, Expediente, HojaVida, BienInmueble,
+                            BienMueble, EduUniversitaria, EduPosgrado,
+                            EduBasica, EduNoUniversitaria, EduTecnica,
+                            InfoAdicional, CargoEleccion, ExperienciaLaboral)
 
 
 class Command(BaseCommand):
@@ -46,6 +48,9 @@ class Command(BaseCommand):
                             help='crawl_info_adicional')
         parser.add_argument('-cce', '--crawl_cargo_eleccion', action='store_true',
                             help='crawl_cargo_eleccion')
+        parser.add_argument('-ccel', '--crawl_candidate_exp_laboral',
+                            action='store_true',
+                            help='crawl_candidate_exp_laboral')
 
     def handle(self, *args, **options):
         if options.get("crawl_lists_candidates"):
@@ -81,7 +86,9 @@ class Command(BaseCommand):
         elif options.get("crawl_info_adicional"):
             crawl_info_adicional()
         elif options.get("crawl_cargo_eleccion"):
-                crawl_cargo_eleccion()
+            crawl_cargo_eleccion()
+        elif options.get("crawl_candidate_exp_laboral"):
+            crawl_candidate_exp_laboral()
 
 election = Elections.objects.get(name='Elecciones Generales 2021')
 
@@ -696,6 +703,41 @@ def crawl_cargo_eleccion():
                 item["election"] = election
                 obj, created = CargoEleccion.objects.update_or_create(
                     idHVCargoEleccion=obj_id,
+                    defaults=item
+                )
+
+                if created:
+                    print(f"created {obj}")
+                else:
+                    print(f"updated {obj}")
+
+
+def crawl_candidate_exp_laboral():
+    # base_url = "https://plataformaelectoral.jne.gob.pe/HojaVida/GetAllHVExpeLaboral?Ids=133572-0-ASC"
+    base_url = "https://plataformaelectoral.jne.gob.pe/HojaVida/GetAllHVExpeLaboral?Ids="
+    candidates = get_candidates()
+    candidates_count = candidates.count()
+
+    i = 1
+    for candidate in candidates:
+        print(f"doing candidate {i}/{candidates_count}")
+        i += 1
+        id_hoja_de_vida = candidate.idHojaVida.idHojaVida
+        url = f"{base_url}{id_hoja_de_vida}-0-ASC"
+        res = requests.get(url)
+        data = res.json()
+        items = data.get("data")
+        
+        for item in items:
+            if item.get('strTengoExpeLaboral') == "1":
+                obj_id = item["idHVExpeLaboral"]
+                item.pop("strTengoExpeLaboral")
+                item.pop("idHVExpeLaboral")
+                item["idHojaVida"] = candidate.idHojaVida
+                item["person"] = candidate
+                item["election"] = election
+                obj, created = ExperienciaLaboral.objects.update_or_create(
+                    idHVExpeLaboral=obj_id,
                     defaults=item
                 )
 

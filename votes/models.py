@@ -554,3 +554,40 @@ class CargoEleccion(models.Model):
 
     def __str__(self):
         return f'{self.person} - {self.strOrgPolCargoElec}'
+
+class ExperienciaLaboral(models.Model):
+    election = models.ForeignKey(Elections, null=True, on_delete=SET_NULL)
+    person = models.ForeignKey(Person, null=True, on_delete=SET_NULL)
+    idHojaVida = models.ForeignKey(HojaVida, null=True, blank=True,
+                                    on_delete=models.SET_NULL)
+    idHVExpeLaboral = models.IntegerField(blank=True, null=True, unique=True)
+    intItemExpeLaboral = models.PositiveSmallIntegerField(null=True,
+                                                            blank=True)
+    strCentroTrabajo = models.TextField(blank=True, null=True)
+    strOcupacionProfesion = models.TextField(blank=True, null=True)
+    strRucTrabajo = models.CharField(max_length=20, blank=True, null=True)
+    strDireccionTrabajo = models.TextField(blank=True, null=True)
+    strAnioTrabajoDesde = models.CharField(max_length=5, blank=True,
+                                            null=True)
+    strAnioTrabajoHasta = models.CharField(max_length=5, blank=True,
+                                            null=True)
+    strUbigeoTrabajo = models.CharField(max_length=6, blank=True, null=True)
+    strTrabajoPais = models.CharField(max_length=255, blank=True, null=True)
+    strTrabajoDepartamento = models.CharField(max_length=255, blank=True,
+                                                null=True)
+    strTrabajoProvincia = models.CharField(max_length=255, blank=True,
+                                            null=True)
+    strTrabajoDistrito = models.CharField(max_length=255, blank=True,
+                                            null=True)
+    strTrabajoUbiDepartamento = models.CharField(max_length=6, blank=True,
+                                                    null=True)
+    strTrabajoUbiProvincia = models.CharField(max_length=6, blank=True,
+                                                null=True)
+    strTrabajoUbiDistrito = models.CharField(max_length=6, blank=True,
+                                                null=True)
+    idEstado = models.PositiveSmallIntegerField(blank=True, null=True)
+    strUsuario = models.CharField(max_length=255, blank=True, null=True)
+    strOrder = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.person} - {self.strOcupacionProfesion}"
