@@ -591,3 +591,27 @@ class ExperienciaLaboral(models.Model):
 
     def __str__(self):
         return f"{self.person} - {self.strOcupacionProfesion}"
+
+class CargoPartidario(models.Model):
+    election = models.ForeignKey(Elections, null=True, on_delete=SET_NULL)
+    person = models.ForeignKey(Person, null=True, on_delete=SET_NULL)
+    idHojaVida = models.ForeignKey(HojaVida, null=True, blank=True,
+                                    on_delete=models.SET_NULL)
+    idHVCargoPartidario = models.IntegerField(null=True, blank=True)
+    intItemCargoPartidario =  models.PositiveSmallIntegerField(null=True,
+                                                                blank=True)
+    idOrgPolCargoPartidario = models.IntegerField(null=True, blank=True)
+    strOrgPolCargoPartidario = models.TextField(null=True, blank=True)
+    strCargoPartidario = models.TextField(null=True, blank=True)
+    strAnioCargoPartiDesde = models.CharField(max_length=5, null=True,
+                                                blank=True)
+    strAnioCargoPartiHasta = models.CharField(max_length=5, null=True,
+                                                blank=True)
+    idEstado = models.PositiveSmallIntegerField(null=True, blank=True)
+    strUsuario = models.CharField(max_length=255, blank=True, null=True)
+    strOrder = models.TextField(blank=True, null=True)
+    strComentario = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.person} - {self.strCargoPartidario}" +\
+                f"({self.strOrgPolCargoPartidario})"
