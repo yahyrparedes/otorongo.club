@@ -182,7 +182,7 @@ def candidato_2021(request, dni):
     context['compiled_person'] = CompiledPerson.objects.get(
         person=person
     )
-
+    
     context['edu_basica'] = EduBasica.objects.filter(**params_filter).first()
     context['edu_tecnica'] = EduTecnica.objects.filter(**params_filter).first()
     context['edu_nouniversitaria'] = EduNoUniversitaria.objects.filter(**params_filter).first()
