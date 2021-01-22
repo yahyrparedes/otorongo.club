@@ -161,6 +161,24 @@
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">
+              <i class="fas fa-building"></i>
+              Experiencia Laboral:
+            </h5>
+            <ul>
+              {% for element in experiencia_laboral %}
+              <li>
+                <strong>{{ element.strAnioTrabajoDesde }} - {{ element.strAnioTrabajoHasta }}</strong>
+                <br>
+                {{ element.strOcupacionProfesion }} - {{ element.strCentroTrabajo }} <br>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">
               <i class="fas fa-balance-scale"></i>
               Antecedentes por delitos dolosos
             </h5>
@@ -340,6 +358,59 @@
             <ul>
               <li>{{ info_adicional.tiene_informacion_adicional }}</li>
             </ul>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">
+              <i class="fab fa-old-republic"></i>
+              Cargos de Elección Popular:
+            </h5>
+            <ol>
+              {% for element in cargo_eleccion %}
+              <li>
+                <strong>{{ element.strAnioCargoElecDesde }} - {{ element.strAnioCargoElecHasta }}</strong>
+                <br>
+                {{ element.strCargoEleccion2 }} - {{ element.strOrgPolCargoElec }} <br>
+              </li>
+              {% endfor %}
+            </ol>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">
+              <i class="fab fa-old-republic"></i>
+              Cargos Partidarios:
+            </h5>
+            <ol>
+              {% for element in cargo_partidario %}
+              <li>
+                <strong>{{ element.strAnioCargoPartiDesde }} - {{ element.strAnioCargoPartiHasta }}</strong>
+                <br>
+                {{ element.strCargoPartidario }} - {{ element.strOrgPolCargoPartidario }} <br>
+              </li>
+              {% endfor %}
+            </ol>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">
+              <i class="fab fa-old-republic"></i>
+              Renuncia de Organización Política:
+            </h5>
+            <ol>
+              {% for element in renuncia_organizacion_politica %}
+              <li>
+                {{ element.strOrgPolRenunciaOP }} <strong>({{ element.strAnioRenunciaOP }})</strong>
+                <br> {{ element.strComentario }}
+              </li>
+              {% endfor %}
+            </ol>
           </div>
         </div>
 

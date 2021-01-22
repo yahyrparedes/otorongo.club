@@ -3,9 +3,12 @@ from time import sleep
 from django.core.management.base import BaseCommand
 import requests
 
-from votes.models import Person, Elections, SentenciaPenal, SentenciaObliga, Department, Expediente, \
-    HojaVida, BienInmueble, BienMueble, EduUniversitaria, EduPosgrado, EduBasica, EduNoUniversitaria, \
-    EduTecnica, InfoAdicional
+from votes.models import (Person, Elections, SentenciaPenal, SentenciaObliga,
+                            Department, Expediente, HojaVida, BienInmueble,
+                            BienMueble, EduUniversitaria, EduPosgrado,
+                            EduBasica, EduNoUniversitaria, EduTecnica,
+                            InfoAdicional, CargoEleccion, ExperienciaLaboral,
+                            CargoPartidario, RenunciaOrganizacionPolitica)
 
 
 class Command(BaseCommand):
@@ -36,14 +39,24 @@ class Command(BaseCommand):
                             help='crawl_edu_universitaria')
         parser.add_argument('-cpostgrado', '--crawl_posgrado', action='store_true',
                             help='crawl_posgrado')
-        parser.add_argument('-cedubasica', '--crawl_edu_basica', action='store_true',
-                            help='crawl_edu_basica')
-        parser.add_argument('-cnouniv', '--crawl_edu_no_universitaria', action='store_true',
+        parser.add_argument('-cedubasica', '--crawl_edu_basica',
+                            action='store_true', help='crawl_edu_basica')
+        parser.add_argument('-cnouniv', '--crawl_edu_no_universitaria',
+                            action='store_true',
                             help='crawl_edu_no_universitaria')
-        parser.add_argument('-cedutec', '--crawl_edu_tecnica', action='store_true',
-                            help='crawl_edu_tecnica')
-        parser.add_argument('-cinfoad', '--crawl_info_adicional', action='store_true',
-                            help='crawl_info_adicional')
+        parser.add_argument('-cedutec', '--crawl_edu_tecnica',
+                            action='store_true', help='crawl_edu_tecnica')
+        parser.add_argument('-cinfoad', '--crawl_info_adicional',
+                            action='store_true', help='crawl_info_adicional')
+        parser.add_argument('-cce', '--crawl_cargo_eleccion',
+                            action='store_true', help='crawl_cargo_eleccion')
+        parser.add_argument('-ccel', '--crawl_candidate_exp_laboral',
+                            action='store_true',
+                            help='crawl_candidate_exp_laboral')
+        parser.add_argument('-ccp', '--crawl_cargo_partidario',
+                            action='store_true',help='crawl_cargo_partidario')
+        parser.add_argument('-cro', '--crawl_renuncia_op',
+                            action='store_true', help='--crawl_renuncia_op')
 
     def handle(self, *args, **options):
         if options.get("crawl_lists_candidates"):
@@ -78,6 +91,14 @@ class Command(BaseCommand):
             crawl_edu_tecnica()
         elif options.get("crawl_info_adicional"):
             crawl_info_adicional()
+        elif options.get("crawl_cargo_eleccion"):
+            crawl_cargo_eleccion()
+        elif options.get("crawl_candidate_exp_laboral"):
+            crawl_candidate_exp_laboral()
+        elif options.get("crawl_cargo_partidario"):
+            crawl_cargo_partidario()
+        elif options.get("crawl_renuncia_op"):
+            crawl_renuncia_op()
 
 election = Elections.objects.get(name='Elecciones Generales 2021')
 
@@ -665,3 +686,141 @@ def crawl_info_adicional():
                 print(f"created {obj}")
             else:
                 print(f"updated {obj}")
+
+
+def crawl_cargo_eleccion():
+    # "https://plataformaelectoral.jne.gob.pe/HojaVida/GetAllHVCargoEleccion?Ids=133572-0-ASC"
+    base_url = "https://plataformaelectoral.jne.gob.pe/HojaVida/GetAllHVCargoEleccion?Ids="
+    candidates = get_candidates()
+    candidates_count = candidates.count()
+
+    i = 1
+    for candidate in candidates:
+        print(f"doing candidate {i}/{candidates_count}")
+        i += 1
+        id_hoja_de_vida = candidate.idHojaVida.idHojaVida
+        url = f"{base_url}{id_hoja_de_vida}-0-ASC"
+        res = requests.get(url)
+        data = res.json()
+        items = data.get("data")
+        
+        for item in items:
+            if item.get('strCargoEleccion') == "1":
+                obj_id = item["idHVCargoEleccion"]
+                item.pop("idHVCargoEleccion")
+                item["idHojaVida"] = candidate.idHojaVida
+                item["person"] = candidate
+                item["election"] = election
+                obj, created = CargoEleccion.objects.update_or_create(
+                    idHVCargoEleccion=obj_id,
+                    defaults=item
+                )
+
+                if created:
+                    print(f"created {obj}")
+                else:
+                    print(f"updated {obj}")
+
+
+def crawl_candidate_exp_laboral():
+    # base_url = "https://plataformaelectoral.jne.gob.pe/HojaVida/GetAllHVExpeLaboral?Ids=133572-0-ASC"
+    base_url = "https://plataformaelectoral.jne.gob.pe/HojaVida/GetAllHVExpeLaboral?Ids="
+    candidates = get_candidates()
+    candidates_count = candidates.count()
+
+    i = 1
+    for candidate in candidates:
+        print(f"doing candidate {i}/{candidates_count}")
+        i += 1
+        id_hoja_de_vida = candidate.idHojaVida.idHojaVida
+        url = f"{base_url}{id_hoja_de_vida}-0-ASC"
+        res = requests.get(url)
+        data = res.json()
+        items = data.get("data")
+        
+        for item in items:
+            if item.get('strTengoExpeLaboral') == "1":
+                obj_id = item["idHVExpeLaboral"]
+                item.pop("strTengoExpeLaboral")
+                item.pop("idHVExpeLaboral")
+                item["idHojaVida"] = candidate.idHojaVida
+                item["person"] = candidate
+                item["election"] = election
+                obj, created = ExperienciaLaboral.objects.update_or_create(
+                    idHVExpeLaboral=obj_id,
+                    defaults=item
+                )
+
+                if created:
+                    print(f"created {obj}")
+                else:
+                    print(f"updated {obj}")
+
+
+def crawl_cargo_partidario():
+    # "https://plataformaelectoral.jne.gob.pe/HojaVida/GetAllHVCargoPartidario?Ids=133572-0-ASC"
+    base_url = "https://plataformaelectoral.jne.gob.pe/HojaVida/GetAllHVCargoPartidario?Ids="
+    candidates = get_candidates()
+    candidates_count = candidates.count()
+
+    i = 1
+    for candidate in candidates:
+        print(f"doing candidate {i}/{candidates_count}")
+        i += 1
+        id_hoja_de_vida = candidate.idHojaVida.idHojaVida
+        url = f"{base_url}{id_hoja_de_vida}-0-ASC"
+        res = requests.get(url)
+        data = res.json()
+        items = data.get("data")
+        
+        for item in items:
+            if item.get('strTengoCargoPartidario') == "1":
+                obj_id = item['idHVCargoPartidario']
+                item.pop('strTengoCargoPartidario')
+                item.pop('idHVCargoPartidario')
+                item['idHojaVida'] = candidate.idHojaVida
+                item['person'] = candidate
+                item['election'] = election
+                obj, created = CargoPartidario.objects.update_or_create(
+                    idHVCargoPartidario=obj_id,
+                    defaults=item
+                )
+
+                if created:
+                    print(f"created {obj}")
+                else:
+                    print(f"updated {obj}")
+
+def crawl_renuncia_op():
+    # "https://plataformaelectoral.jne.gob.pe/HojaVida/GetHVRenunciaOP?Ids=133572-0-ASC"
+    base_url = "https://plataformaelectoral.jne.gob.pe/HojaVida/GetHVRenunciaOP?Ids="
+    candidates = get_candidates()
+    candidates_count = candidates.count()
+
+    i = 1
+    for candidate in candidates:
+        print(f"doing candidate {i}/{candidates_count}")
+        i += 1
+        id_hoja_de_vida = candidate.idHojaVida.idHojaVida
+        url = f"{base_url}{id_hoja_de_vida}-0-ASC"
+        res = requests.get(url)
+        data = res.json()
+        items = data.get("data")
+        
+        for item in items:
+            if item.get('strTengoRenunciaOP') == "1":
+                obj_id = item['idHVRenunciaOP']
+                item.pop('strTengoRenunciaOP')
+                item.pop('idHVRenunciaOP')
+                item['idHojaVida'] = candidate.idHojaVida
+                item['person'] = candidate
+                item['election'] = election
+                obj, created = RenunciaOrganizacionPolitica.objects.update_or_create(
+                    idHVRenunciaOP=obj_id,
+                    defaults=item
+                )
+
+                if created:
+                    print(f"created {obj}")
+                else:
+                    print(f"updated {obj}")

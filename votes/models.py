@@ -527,3 +527,113 @@ class VoteEvent(models.Model):
     vote_projects = models.ManyToManyField(ProjectLaw)
     person = models.ForeignKey(Person, null=True, on_delete=SET_NULL)
     vote = models.ForeignKey(Vote, null=True, on_delete=SET_NULL)
+
+
+class CargoEleccion(models.Model):
+    election = models.ForeignKey(Elections, null=True, on_delete=SET_NULL)
+    person = models.ForeignKey(Person, null=True, on_delete=SET_NULL)
+    idHojaVida = models.ForeignKey(HojaVida, null=True, blank=True,
+                                    on_delete=models.SET_NULL)
+    idHVCargoEleccion = models.IntegerField(null=True, blank=True,
+                                            unique=True)
+    strCargoEleccion = models.CharField(max_length=5, blank=True, null=True)
+    intItemCargoEleccion = models.PositiveSmallIntegerField(blank=True,
+                                                            null=True)
+    idOrgPolCargoElec = models.IntegerField(blank=True, null=True)
+    strOrgPolCargoElec = models.TextField(blank=True, null=True)
+    strAnioCargoElecDesde = models.CharField(max_length=5, blank=True,
+                                                null=True)
+    strAnioCargoElecHasta = models.CharField(max_length=5, blank=True,
+                                                null=True)
+    idEstado = models.PositiveSmallIntegerField(blank=True, null=True)
+    strUsuario = models.TextField(blank=True, null=True)
+    idCargoEleccion = models.IntegerField(blank=True, null=True)
+    strCargoEleccion2 = models.TextField(blank=True, null=True)
+    strOrder = models.TextField(blank=True, null=True)
+    strComentario = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return f'{self.person} - {self.strOrgPolCargoElec}'
+
+class ExperienciaLaboral(models.Model):
+    election = models.ForeignKey(Elections, null=True, on_delete=SET_NULL)
+    person = models.ForeignKey(Person, null=True, on_delete=SET_NULL)
+    idHojaVida = models.ForeignKey(HojaVida, null=True, blank=True,
+                                    on_delete=models.SET_NULL)
+    idHVExpeLaboral = models.IntegerField(blank=True, null=True, unique=True)
+    intItemExpeLaboral = models.PositiveSmallIntegerField(null=True,
+                                                            blank=True)
+    strCentroTrabajo = models.TextField(blank=True, null=True)
+    strOcupacionProfesion = models.TextField(blank=True, null=True)
+    strRucTrabajo = models.CharField(max_length=20, blank=True, null=True)
+    strDireccionTrabajo = models.TextField(blank=True, null=True)
+    strAnioTrabajoDesde = models.CharField(max_length=5, blank=True,
+                                            null=True)
+    strAnioTrabajoHasta = models.CharField(max_length=5, blank=True,
+                                            null=True)
+    strUbigeoTrabajo = models.CharField(max_length=6, blank=True, null=True)
+    strTrabajoPais = models.CharField(max_length=255, blank=True, null=True)
+    strTrabajoDepartamento = models.CharField(max_length=255, blank=True,
+                                                null=True)
+    strTrabajoProvincia = models.CharField(max_length=255, blank=True,
+                                            null=True)
+    strTrabajoDistrito = models.CharField(max_length=255, blank=True,
+                                            null=True)
+    strTrabajoUbiDepartamento = models.CharField(max_length=6, blank=True,
+                                                    null=True)
+    strTrabajoUbiProvincia = models.CharField(max_length=6, blank=True,
+                                                null=True)
+    strTrabajoUbiDistrito = models.CharField(max_length=6, blank=True,
+                                                null=True)
+    idEstado = models.PositiveSmallIntegerField(blank=True, null=True)
+    strUsuario = models.CharField(max_length=255, blank=True, null=True)
+    strOrder = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.person} - {self.strOcupacionProfesion}"
+
+class CargoPartidario(models.Model):
+    election = models.ForeignKey(Elections, null=True, on_delete=SET_NULL)
+    person = models.ForeignKey(Person, null=True, on_delete=SET_NULL)
+    idHojaVida = models.ForeignKey(HojaVida, null=True, blank=True,
+                                    on_delete=models.SET_NULL)
+    idHVCargoPartidario = models.IntegerField(null=True, blank=True)
+    intItemCargoPartidario =  models.PositiveSmallIntegerField(null=True,
+                                                                blank=True)
+    idOrgPolCargoPartidario = models.IntegerField(null=True, blank=True)
+    strOrgPolCargoPartidario = models.TextField(null=True, blank=True)
+    strCargoPartidario = models.TextField(null=True, blank=True)
+    strAnioCargoPartiDesde = models.CharField(max_length=5, null=True,
+                                                blank=True)
+    strAnioCargoPartiHasta = models.CharField(max_length=5, null=True,
+                                                blank=True)
+    idEstado = models.PositiveSmallIntegerField(null=True, blank=True)
+    strUsuario = models.CharField(max_length=255, blank=True, null=True)
+    strOrder = models.TextField(blank=True, null=True)
+    strComentario = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.person} - {self.strCargoPartidario}" +\
+                f"({self.strOrgPolCargoPartidario})"
+
+class RenunciaOrganizacionPolitica(models.Model):
+    election = models.ForeignKey(Elections, null=True, on_delete=SET_NULL)
+    person = models.ForeignKey(Person, null=True, on_delete=SET_NULL)
+    idHojaVida = models.ForeignKey(HojaVida, null=True, blank=True,
+                                    on_delete=models.SET_NULL)
+    idHVRenunciaOP = models.IntegerField(null=True, blank=True)
+    intItemRenunciaOP = models.PositiveSmallIntegerField(null=True,
+                                                            blank=True)
+    idOrgPolRenunciaOP = models.IntegerField(null=True, blank=True)
+    strOrgPolRenunciaOP = models.TextField(null=True, blank=True)
+    strAnioRenunciaOP = models.CharField(max_length=5, null=True, blank=True)
+    strFechaRegistro = models.CharField(max_length=50, null=True, blank=True)
+    idEstado = models.PositiveSmallIntegerField(null=True, blank=True)
+    strUsuario = models.CharField(max_length=255, null=True, blank=True)
+    cadenaRenuncia = models.TextField(null=True, blank=True)
+    strOrder = models.TextField(null=True, blank=True)
+    strComentario = models.TextField(null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.person} - {self.strOrgPolRenunciaOP}" +\
+                f"({self.strAnioRenunciaOP})"
