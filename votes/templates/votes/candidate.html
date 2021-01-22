@@ -161,6 +161,24 @@
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">
+              <i class="fas fa-building"></i>
+              Experiencia Laboral:
+            </h5>
+            <ul>
+              {% for element in experiencia_laboral %}
+              <li>
+                <strong>{{ element.strAnioTrabajoDesde }} - {{ element.strAnioTrabajoHasta }}</strong>
+                <br>
+                {{ element.strOcupacionProfesion }} - {{ element.strCentroTrabajo }} <br>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">
               <i class="fas fa-balance-scale"></i>
               Antecedentes por delitos dolosos
             </h5>
