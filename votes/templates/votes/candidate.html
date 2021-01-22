@@ -397,6 +397,23 @@
           </div>
         </div>
 
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">
+              <i class="fab fa-old-republic"></i>
+              Cargos Partidarios:
+            </h5>
+            <ol>
+              {% for element in renuncia_organizacion_politica %}
+              <li>
+                {{ element.strOrgPolRenunciaOP }} <strong>({{ element.strAnioRenunciaOP }})</strong>
+                <br> {{ element.strComentario }}
+              </li>
+              {% endfor %}
+            </ol>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>

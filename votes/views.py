@@ -10,7 +10,7 @@ from votes.models import (Person, Elections, Ingresos, BienMueble,
                             BienInmueble, CompiledPerson, CompiledOrg,
                             EduBasica, EduNoUniversitaria, EduTecnica,
                             InfoAdicional, CargoEleccion, ExperienciaLaboral,
-                            CargoPartidario)
+                            CargoPartidario, RenunciaOrganizacionPolitica)
 from votes.utils import Paginator
 
 CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
@@ -190,6 +190,7 @@ def candidato_2021(request, dni):
     context['cargo_eleccion'] = CargoEleccion.objects.filter(**params_filter).all()
     context['experiencia_laboral'] = ExperienciaLaboral.objects.filter(**params_filter).all()
     context['cargo_partidario'] = CargoPartidario.objects.filter(**params_filter).all()
+    context['renuncia_organizacion_politica'] = RenunciaOrganizacionPolitica.objects.filter(**params_filter).all()
 
     return render(
         request,
