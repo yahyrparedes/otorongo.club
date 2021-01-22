@@ -32,7 +32,7 @@ def search(request):
     all_items = Person.objects.filter(
         full_search=SearchQuery(query),
         elections=election,
-    )
+    ).order_by('last_names')
     context['all_items'] = all_items
     context['all_items_count'] = all_items.count()
     context['query'] = query

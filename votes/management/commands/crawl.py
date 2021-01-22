@@ -555,11 +555,13 @@ def update_candidate_bien_mueble():
             obj.person = candidate
             obj.election = election
             obj.idHojaVida = candidate.idHojaVida
+            obj.save()
 
             if created:
                 print(f"created {obj}")
             else:
                 print(f"updated {obj}")
+
 
 def crawl_edu_basica():
     # "https://plataformaelectoral.jne.gob.pe/HojaVida/GetAllHVEduBasica?Ids=133572-0"
@@ -587,11 +589,16 @@ def crawl_edu_basica():
                 idHVEduBasica=obj_id,
                 defaults=item,
             )
+            obj.person = candidate
+            obj.election = election
+            obj.idHojaVida = candidate.idHojaVida
+            obj.save()
 
             if created:
                 print(f"created {obj}")
             else:
                 print(f"updated {obj}")
+
 
 def crawl_edu_no_universitaria():
     # "https://plataformaelectoral.jne.gob.pe/HojaVida/GetAllHVNoUniversitaria?Ids=133572-0"
@@ -619,10 +626,15 @@ def crawl_edu_no_universitaria():
                 idHVNoUniversitaria=obj_id,
                 defaults=item,
             )
+            obj.person = candidate
+            obj.election = election
+            obj.idHojaVida = candidate.idHojaVida
+            obj.save()
             if created:
                 print(f"created {obj}")
             else:
                 print(f"updated {obj}")
+
 
 def crawl_edu_tecnica():
     # "https://plataformaelectoral.jne.gob.pe/HojaVida/GetAllHVEduTecnico?Ids=133572-0"
@@ -651,10 +663,15 @@ def crawl_edu_tecnica():
                 idHVEduTecnico=obj_id,
                 defaults=item,
             )
+            obj.person = candidate
+            obj.election = election
+            obj.idHojaVida = candidate.idHojaVida
+            obj.save()
             if created:
                 print(f"created {obj}")
             else:
                 print(f"updated {obj}")
+
 
 def crawl_info_adicional():
     # "https://plataformaelectoral.jne.gob.pe/HojaVida/GetAllHVInfoAdicional?Ids=133572-0"
@@ -682,11 +699,15 @@ def crawl_info_adicional():
                 idHVInfoAdicional=obj_id,
                 defaults=item,
             )
+            obj.person = candidate
+            obj.election = election
+            obj.idHojaVida = candidate.idHojaVida
+            obj.save()
+
             if created:
                 print(f"created {obj}")
             else:
                 print(f"updated {obj}")
-
 
 def crawl_cargo_eleccion():
     # "https://plataformaelectoral.jne.gob.pe/HojaVida/GetAllHVCargoEleccion?Ids=133572-0-ASC"
