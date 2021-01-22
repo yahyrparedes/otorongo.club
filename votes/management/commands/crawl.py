@@ -568,11 +568,16 @@ def crawl_edu_basica():
                 idHVEduBasica=obj_id,
                 defaults=item,
             )
+            obj.person = candidate
+            obj.election = election
+            obj.idHojaVida = candidate.idHojaVida
+            obj.save()
 
             if created:
                 print(f"created {obj}")
             else:
                 print(f"updated {obj}")
+
 
 def crawl_edu_no_universitaria():
     # "https://plataformaelectoral.jne.gob.pe/HojaVida/GetAllHVNoUniversitaria?Ids=133572-0"
@@ -600,10 +605,15 @@ def crawl_edu_no_universitaria():
                 idHVNoUniversitaria=obj_id,
                 defaults=item,
             )
+            obj.person = candidate
+            obj.election = election
+            obj.idHojaVida = candidate.idHojaVida
+            obj.save()
             if created:
                 print(f"created {obj}")
             else:
                 print(f"updated {obj}")
+
 
 def crawl_edu_tecnica():
     # "https://plataformaelectoral.jne.gob.pe/HojaVida/GetAllHVEduTecnico?Ids=133572-0"
@@ -632,6 +642,10 @@ def crawl_edu_tecnica():
                 idHVEduTecnico=obj_id,
                 defaults=item,
             )
+            obj.person = candidate
+            obj.election = election
+            obj.idHojaVida = candidate.idHojaVida
+            obj.save()
             if created:
                 print(f"created {obj}")
             else:
@@ -664,6 +678,11 @@ def crawl_info_adicional():
                 idHVInfoAdicional=obj_id,
                 defaults=item,
             )
+            obj.person = candidate
+            obj.election = election
+            obj.idHojaVida = candidate.idHojaVida
+            obj.save()
+
             if created:
                 print(f"created {obj}")
             else:
