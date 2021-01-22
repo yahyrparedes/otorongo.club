@@ -615,3 +615,25 @@ class CargoPartidario(models.Model):
     def __str__(self):
         return f"{self.person} - {self.strCargoPartidario}" +\
                 f"({self.strOrgPolCargoPartidario})"
+
+class RenunciaOrganizacionPolitica(models.Model):
+    election = models.ForeignKey(Elections, null=True, on_delete=SET_NULL)
+    person = models.ForeignKey(Person, null=True, on_delete=SET_NULL)
+    idHojaVida = models.ForeignKey(HojaVida, null=True, blank=True,
+                                    on_delete=models.SET_NULL)
+    idHVRenunciaOP = models.IntegerField(null=True, blank=True)
+    intItemRenunciaOP = models.PositiveSmallIntegerField(null=True,
+                                                            blank=True)
+    idOrgPolRenunciaOP = models.IntegerField(null=True, blank=True)
+    strOrgPolRenunciaOP = models.TextField(null=True, blank=True)
+    strAnioRenunciaOP = models.CharField(max_length=5, null=True, blank=True)
+    strFechaRegistro = models.CharField(max_length=50, null=True, blank=True)
+    idEstado = models.PositiveSmallIntegerField(null=True, blank=True)
+    strUsuario = models.CharField(max_length=255, null=True, blank=True)
+    cadenaRenuncia = models.TextField(null=True, blank=True)
+    strOrder = models.TextField(null=True, blank=True)
+    strComentario = models.TextField(null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.person} - {self.strOrgPolRenunciaOP}" +\
+                f"({self.strAnioRenunciaOP})"

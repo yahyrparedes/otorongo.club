@@ -8,7 +8,7 @@ from votes.models import (Person, Elections, SentenciaPenal, SentenciaObliga,
                             BienMueble, EduUniversitaria, EduPosgrado,
                             EduBasica, EduNoUniversitaria, EduTecnica,
                             InfoAdicional, CargoEleccion, ExperienciaLaboral,
-                            CargoPartidario)
+                            CargoPartidario, RenunciaOrganizacionPolitica)
 
 
 class Command(BaseCommand):
@@ -40,26 +40,23 @@ class Command(BaseCommand):
         parser.add_argument('-cpostgrado', '--crawl_posgrado', action='store_true',
                             help='crawl_posgrado')
         parser.add_argument('-cedubasica', '--crawl_edu_basica',
-                            action='store_true',
-                            help='crawl_edu_basica')
+                            action='store_true', help='crawl_edu_basica')
         parser.add_argument('-cnouniv', '--crawl_edu_no_universitaria',
                             action='store_true',
                             help='crawl_edu_no_universitaria')
         parser.add_argument('-cedutec', '--crawl_edu_tecnica',
-                            action='store_true',
-                            help='crawl_edu_tecnica')
+                            action='store_true', help='crawl_edu_tecnica')
         parser.add_argument('-cinfoad', '--crawl_info_adicional',
-                            action='store_true',
-                            help='crawl_info_adicional')
+                            action='store_true', help='crawl_info_adicional')
         parser.add_argument('-cce', '--crawl_cargo_eleccion',
-                            action='store_true',
-                            help='crawl_cargo_eleccion')
+                            action='store_true', help='crawl_cargo_eleccion')
         parser.add_argument('-ccel', '--crawl_candidate_exp_laboral',
                             action='store_true',
                             help='crawl_candidate_exp_laboral')
         parser.add_argument('-ccp', '--crawl_cargo_partidario',
-                            action='store_true',
-                            help='crawl_cargo_partidario')
+                            action='store_true',help='crawl_cargo_partidario')
+        parser.add_argument('-cro', '--crawl_renuncia_op',
+                            action='store_true', help='--crawl_renuncia_op')
 
     def handle(self, *args, **options):
         if options.get("crawl_lists_candidates"):
@@ -100,6 +97,8 @@ class Command(BaseCommand):
             crawl_candidate_exp_laboral()
         elif options.get("crawl_cargo_partidario"):
             crawl_cargo_partidario()
+        elif options.get("crawl_renuncia_op"):
+            crawl_renuncia_op()
 
 election = Elections.objects.get(name='Elecciones Generales 2021')
 
@@ -792,10 +791,9 @@ def crawl_cargo_partidario():
                 else:
                     print(f"updated {obj}")
 
-# Incomplete
 def crawl_renuncia_op():
     # "https://plataformaelectoral.jne.gob.pe/HojaVida/GetHVRenunciaOP?Ids=133572-0-ASC"
-    base_url = "https://plataformaelectoral.jne.gob.pe/HojaVida/GetHVRenunciaOP?Ids=133572-0-ASC"
+    base_url = "https://plataformaelectoral.jne.gob.pe/HojaVida/GetHVRenunciaOP?Ids="
     candidates = get_candidates()
     candidates_count = candidates.count()
 
@@ -808,3 +806,21 @@ def crawl_renuncia_op():
         res = requests.get(url)
         data = res.json()
         items = data.get("data")
+        
+        for item in items:
+            if item.get('strTengoRenunciaOP') == "1":
+                obj_id = item['idHVRenunciaOP']
+                item.pop('strTengoRenunciaOP')
+                item.pop('idHVRenunciaOP')
+                item['idHojaVida'] = candidate.idHojaVida
+                item['person'] = candidate
+                item['election'] = election
+                obj, created = RenunciaOrganizacionPolitica.objects.update_or_create(
+                    idHVRenunciaOP=obj_id,
+                    defaults=item
+                )
+
+                if created:
+                    print(f"created {obj}")
+                else:
+                    print(f"updated {obj}")
