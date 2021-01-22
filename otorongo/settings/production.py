@@ -10,6 +10,7 @@ DATABASES["default"]["HOST"] = "db"
 ALLOWED_HOSTS = [
     '.otorongo.club',  # Allow domain and subdomains
     '.otorongo.club.',  # Also allow FQDN and subdomains
+    'localhost',
 ]
 
 MEDIA_ROOT = "/data/media/"
