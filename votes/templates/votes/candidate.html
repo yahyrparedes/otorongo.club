@@ -343,6 +343,24 @@
           </div>
         </div>
 
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">
+              <i class="fab fa-old-republic"></i>
+              Cargos de Elección Popular:
+            </h5>
+            <ul>
+              {% for element in cargo_eleccion %}
+              <li>
+                <strong>{{ element.strAnioCargoElecDesde }} - {{ element.strAnioCargoElecHasta }}</strong>
+                <br>
+                {{ element.strCargoEleccion2 }} - {{ element.strOrgPolCargoElec }} <br>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
