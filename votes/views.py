@@ -9,7 +9,8 @@ from django.views.decorators.csrf import csrf_exempt
 from votes.models import (Person, Elections, Ingresos, BienMueble,
                             BienInmueble, CompiledPerson, CompiledOrg,
                             EduBasica, EduNoUniversitaria, EduTecnica,
-                            InfoAdicional, CargoEleccion, ExperienciaLaboral)
+                            InfoAdicional, CargoEleccion, ExperienciaLaboral,
+                            CargoPartidario)
 from votes.utils import Paginator
 
 CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
@@ -188,6 +189,7 @@ def candidato_2021(request, dni):
     context['info_adicional'] = InfoAdicional.objects.filter(**params_filter).first()
     context['cargo_eleccion'] = CargoEleccion.objects.filter(**params_filter).all()
     context['experiencia_laboral'] = ExperienciaLaboral.objects.filter(**params_filter).all()
+    context['cargo_partidario'] = CargoPartidario.objects.filter(**params_filter).all()
 
     return render(
         request,

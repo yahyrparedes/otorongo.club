@@ -367,7 +367,7 @@
               <i class="fab fa-old-republic"></i>
               Cargos de Elección Popular:
             </h5>
-            <ul>
+            <ol>
               {% for element in cargo_eleccion %}
               <li>
                 <strong>{{ element.strAnioCargoElecDesde }} - {{ element.strAnioCargoElecHasta }}</strong>
@@ -375,7 +375,25 @@
                 {{ element.strCargoEleccion2 }} - {{ element.strOrgPolCargoElec }} <br>
               </li>
               {% endfor %}
-            </ul>
+            </ol>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">
+              <i class="fab fa-old-republic"></i>
+              Cargos Partidarios:
+            </h5>
+            <ol>
+              {% for element in cargo_partidario %}
+              <li>
+                <strong>{{ element.strAnioCargoPartiDesde }} - {{ element.strAnioCargoPartiHasta }}</strong>
+                <br>
+                {{ element.strCargoPartidario }} - {{ element.strOrgPolCargoPartidario }} <br>
+              </li>
+              {% endfor %}
+            </ol>
           </div>
         </div>
 
