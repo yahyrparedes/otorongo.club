@@ -6,11 +6,11 @@ from django.conf import settings
 from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from django.views.decorators.csrf import csrf_exempt
 
-from votes.models import (Person, Elections, Ingresos, BienMueble,
-                            BienInmueble, CompiledPerson, CompiledOrg,
-                            EduBasica, EduNoUniversitaria, EduTecnica,
-                            InfoAdicional, CargoEleccion, ExperienciaLaboral,
-                            CargoPartidario, RenunciaOrganizacionPolitica)
+from votes.models import Person, Elections, Ingresos, BienMueble, \
+                            BienInmueble, CompiledPerson, CompiledOrg, \
+                            EduBasica, EduNoUniversitaria, EduTecnica, \
+                            InfoAdicional, CargoEleccion, ExperienciaLaboral, \
+                            CargoPartidario, RenunciaOrganizacionPolitica
 from votes.utils import Paginator
 
 CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)

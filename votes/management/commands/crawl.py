@@ -3,12 +3,12 @@ from time import sleep
 from django.core.management.base import BaseCommand
 import requests
 
-from votes.models import (Person, Elections, SentenciaPenal, SentenciaObliga,
-                            Department, Expediente, HojaVida, BienInmueble,
-                            BienMueble, EduUniversitaria, EduPosgrado,
-                            EduBasica, EduNoUniversitaria, EduTecnica,
-                            InfoAdicional, CargoEleccion, ExperienciaLaboral,
-                            CargoPartidario, RenunciaOrganizacionPolitica)
+from votes.models import Person, Elections, SentenciaPenal, SentenciaObliga, \
+                            Department, Expediente, HojaVida, BienInmueble, \
+                            BienMueble, EduUniversitaria, EduPosgrado, \
+                            EduBasica, EduNoUniversitaria, EduTecnica, \
+                            InfoAdicional, CargoEleccion, ExperienciaLaboral, \
+                            CargoPartidario, RenunciaOrganizacionPolitica
 
 
 class Command(BaseCommand):
