@@ -4,11 +4,9 @@ from django.core.management.base import BaseCommand
 import requests
 
 from votes.models import Person, Elections, SentenciaPenal, SentenciaObliga, \
-                            Department, Expediente, HojaVida, BienInmueble, \
-                            BienMueble, EduUniversitaria, EduPosgrado, \
-                            EduBasica, EduNoUniversitaria, EduTecnica, \
-                            InfoAdicional, CargoEleccion, ExperienciaLaboral, \
-                            CargoPartidario, RenunciaOrganizacionPolitica
+    Department, Expediente, HojaVida, BienInmueble, BienMueble, EduUniversitaria, \
+    EduPosgrado, EduBasica, EduNoUniversitaria, EduTecnica, InfoAdicional, \
+    CargoEleccion, ExperienciaLaboral, CargoPartidario, RenunciaOrganizacionPolitica
 
 
 class Command(BaseCommand):
@@ -100,10 +98,13 @@ class Command(BaseCommand):
         elif options.get("crawl_renuncia_op"):
             crawl_renuncia_op()
 
+
 election = Elections.objects.get(name='Elecciones Generales 2021')
+
 
 def get_candidates():
     return Person.objects.filter(elections=election)
+
 
 def crawl_lists_candidates():
     print("Crawl lists of candidates")
@@ -709,6 +710,7 @@ def crawl_info_adicional():
             else:
                 print(f"updated {obj}")
 
+
 def crawl_cargo_eleccion():
     # "https://plataformaelectoral.jne.gob.pe/HojaVida/GetAllHVCargoEleccion?Ids=133572-0-ASC"
     base_url = "https://plataformaelectoral.jne.gob.pe/HojaVida/GetAllHVCargoEleccion?Ids="
@@ -724,7 +726,7 @@ def crawl_cargo_eleccion():
         res = requests.get(url)
         data = res.json()
         items = data.get("data")
-        
+
         for item in items:
             if item.get('strCargoEleccion') == "1":
                 obj_id = item["idHVCargoEleccion"]
@@ -736,6 +738,10 @@ def crawl_cargo_eleccion():
                     idHVCargoEleccion=obj_id,
                     defaults=item
                 )
+                obj.person = candidate
+                obj.election = election
+                obj.idHojaVida = candidate.idHojaVida
+                obj.save()
 
                 if created:
                     print(f"created {obj}")
@@ -758,7 +764,7 @@ def crawl_candidate_exp_laboral():
         res = requests.get(url)
         data = res.json()
         items = data.get("data")
-        
+
         for item in items:
             if item.get('strTengoExpeLaboral') == "1":
                 obj_id = item["idHVExpeLaboral"]
@@ -771,6 +777,10 @@ def crawl_candidate_exp_laboral():
                     idHVExpeLaboral=obj_id,
                     defaults=item
                 )
+                obj.person = candidate
+                obj.election = election
+                obj.idHojaVida = candidate.idHojaVida
+                obj.save()
 
                 if created:
                     print(f"created {obj}")
@@ -793,7 +803,7 @@ def crawl_cargo_partidario():
         res = requests.get(url)
         data = res.json()
         items = data.get("data")
-        
+
         for item in items:
             if item.get('strTengoCargoPartidario') == "1":
                 obj_id = item['idHVCargoPartidario']
@@ -806,11 +816,16 @@ def crawl_cargo_partidario():
                     idHVCargoPartidario=obj_id,
                     defaults=item
                 )
+                obj.person = candidate
+                obj.election = election
+                obj.idHojaVida = candidate.idHojaVida
+                obj.save()
 
                 if created:
                     print(f"created {obj}")
                 else:
                     print(f"updated {obj}")
+
 
 def crawl_renuncia_op():
     # "https://plataformaelectoral.jne.gob.pe/HojaVida/GetHVRenunciaOP?Ids=133572-0-ASC"
@@ -827,7 +842,7 @@ def crawl_renuncia_op():
         res = requests.get(url)
         data = res.json()
         items = data.get("data")
-        
+
         for item in items:
             if item.get('strTengoRenunciaOP') == "1":
                 obj_id = item['idHVRenunciaOP']
@@ -840,6 +855,10 @@ def crawl_renuncia_op():
                     idHVRenunciaOP=obj_id,
                     defaults=item
                 )
+                obj.person = candidate
+                obj.election = election
+                obj.idHojaVida = candidate.idHojaVida
+                obj.save()
 
                 if created:
                     print(f"created {obj}")

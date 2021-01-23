@@ -6,11 +6,10 @@ from django.conf import settings
 from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from django.views.decorators.csrf import csrf_exempt
 
-from votes.models import Person, Elections, Ingresos, BienMueble, \
-                            BienInmueble, CompiledPerson, CompiledOrg, \
-                            EduBasica, EduNoUniversitaria, EduTecnica, \
-                            InfoAdicional, CargoEleccion, ExperienciaLaboral, \
-                            CargoPartidario, RenunciaOrganizacionPolitica
+from votes.models import Person, Elections, Ingresos, BienMueble, BienInmueble, \
+    CompiledPerson, CompiledOrg, EduBasica, EduNoUniversitaria, EduTecnica, \
+    InfoAdicional, CargoEleccion, ExperienciaLaboral, CargoPartidario, \
+    RenunciaOrganizacionPolitica
 from votes.utils import Paginator
 
 CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
@@ -182,7 +181,7 @@ def candidato_2021(request, dni):
     context['compiled_person'] = CompiledPerson.objects.get(
         person=person
     )
-    
+
     context['edu_basica'] = EduBasica.objects.filter(**params_filter).first()
     context['edu_tecnica'] = EduTecnica.objects.filter(**params_filter).first()
     context['edu_nouniversitaria'] = EduNoUniversitaria.objects.filter(**params_filter).first()
