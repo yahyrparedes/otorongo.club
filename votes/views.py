@@ -64,7 +64,7 @@ def ingresos_2021(request):
     )
 
 
-def sentencias_2021(request, org_id = None):
+def sentencias_2021(request, org_id=None):
     region = request.GET.get('region')
     context, election = make_context()
     persons = CompiledPerson.objects.filter(
@@ -75,8 +75,7 @@ def sentencias_2021(request, org_id = None):
         pass
     elif region:
         persons = persons.filter(person__strPostulaDistrito=region)
-
-    if org_id:
+    elif org_id:
         persons = persons.filter(person__idOrganizacionPolitica=org_id)
         org = CompiledOrg.objects.filter(idOrganizacionPolitica=org_id).first()
         context['org_name'] = org.name
@@ -85,6 +84,7 @@ def sentencias_2021(request, org_id = None):
     context['candidates'] = paginator
     context['page'] = page
     context['org_id'] = org_id
+    context['region'] = region
 
     return render(
         request,
