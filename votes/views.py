@@ -65,6 +65,31 @@ def ingresos_2021(request):
         context,
     )
 
+def ingresos_2021_json(request):
+    election = make_context()[1]
+    persons = CompiledPerson.objects.filter(
+        person__elections=election,
+    ).order_by('-ingreso_total')
+
+    data = []
+    for candidate in persons:
+        has_ingreso = candidate.ingreso != None
+
+        obj = {}
+        obj['nombre'] = f"{candidate.person.last_names} "\
+            + candidate.person.first_names
+        obj['dni'] = candidate.person.dni_number
+        obj['partido'] = candidate.person.strOrganizacionPolitica
+        obj['total_ingreso'] = candidate.ingreso_total
+        obj['ingreso_publico'] = candidate.ingreso.decRemuBrutaPublico if has_ingreso else 0
+        obj['ingreso_privado'] = candidate.ingreso.decRemuBrutaPrivado if has_ingreso else 0
+        obj['renta_publico'] = candidate.ingreso.decRentaIndividualPublico if has_ingreso else 0
+        obj['renta_privado'] = candidate.ingreso.decRentaIndividualPrivado if has_ingreso else 0
+        obj['otro_ingreso_publico'] = candidate.ingreso.decOtroIngresoPublico if has_ingreso else 0
+        obj['otro_ingreso_privado'] = candidate.ingreso.decOtroIngresoPrivado if has_ingreso else 0
+        data.append(obj)
+
+    return JsonResponse(data, safe=False)
 
 def sentencias_2021(request, org_id = None):
     region = request.GET.get('region')

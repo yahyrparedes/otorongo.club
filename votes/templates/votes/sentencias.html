@@ -23,9 +23,7 @@
     </h4>
   {% endif %}
 
-  <br>
-  <a class="btn btn-primary" target="blank" href="/2021/json/sentencias">Exportar tabla</a>
-  <br><br>
+  {% include "votes/export.html" with href="/2021/json/sentencias" %}
 
   <div class="table-responsive">
     <table class="table table-striped">
