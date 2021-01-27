@@ -6,11 +6,10 @@
 {% endblock title %}
 
 {% block content %}
-
-  {% include "votes/export.html" with href="/2021/json/bienes" %}
-
   <h3>Lista de candidatos a elecciones generales 2021 ordenados por
     valor de bienes muebles e inmuebles declarados</h3>
+
+  {% include "votes/export.html" with href="/2021/json/bienes" %}
 
   <div class="table-responsive">
     <table class="table table-striped">

@@ -131,8 +131,8 @@ def sentencias_2021_json(request):
         obj['nombre'] = f"{candidate.person.last_names} "\
             + f"{candidate.person.first_names}"
         obj['dni'] = candidate.person.dni_number
-        obj['organizacion_politica'] = candidate.person.strOrganizacionPolitica
-        obj['total_antecedents'] = candidate.sentencias_total
+        obj['partido'] = candidate.person.strOrganizacionPolitica
+        obj['total_antecedentes'] = candidate.sentencias_total
         obj['antecedentes_penales'] = candidate.sentencias_penales
         obj['antecedentes_obligaciones'] = candidate.sentencias_obliga
         data.append(obj)
