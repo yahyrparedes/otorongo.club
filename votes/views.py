@@ -1,8 +1,9 @@
 from django.contrib.postgres.search import SearchQuery
 from django.core.paginator import InvalidPage
-from django.http import Http404
+from django.http import Http404, JsonResponse
 from django.shortcuts import render
 from django.conf import settings
+from django.core import serializers
 from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from django.views.decorators.csrf import csrf_exempt
 
@@ -92,6 +93,26 @@ def sentencias_2021(request, org_id = None):
         'votes/sentencias.html',
         context,
     )
+
+def sentencias_2021_json(request):
+    election = make_context()[1]
+    persons = CompiledPerson.objects.filter(
+        person__elections=election,
+    ).order_by('-sentencias_total')
+
+    data = []
+    for candidate in persons:
+        obj = {}
+        obj['nombre'] = f"{candidate.person.last_names} "\
+            + f"{candidate.person.first_names}"
+        obj['dni'] = candidate.person.dni_number
+        obj['organizacion_politica'] = candidate.person.strOrganizacionPolitica
+        obj['total_antecedents'] = candidate.sentencias_total
+        obj['antecedentes_penales'] = candidate.sentencias_penales
+        obj['antecedentes_obligaciones'] = candidate.sentencias_obliga
+        data.append(obj)
+
+    return JsonResponse(data, safe=False)
 
 
 def bienes_2021(request):
