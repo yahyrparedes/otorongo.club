@@ -157,6 +157,25 @@ def bienes_2021(request):
         context,
     )
 
+def bienes_2021_json(request):
+    election = make_context()[1]
+    persons = CompiledPerson.objects.filter(
+        person__elections=election
+    ).order_by('-total_muebles_inmuebles')
+
+    data = []
+    for candidate in persons:
+        obj = {}
+        obj['nombre'] = f"{candidate.person.last_names} "\
+            + f"{candidate.person.first_names}"
+        obj['dni'] = candidate.person.dni_number
+        obj['partido'] = candidate.person.strOrganizacionPolitica
+        obj['total_muebles_inmuebles'] = candidate.total_muebles_inmuebles
+        obj['muebles'] = candidate.muebles
+        obj['inmuebles'] = candidate.inmuebles
+        data.append(obj)
+
+    return JsonResponse(data, safe=False)
 
 def make_context():
     election = Elections.objects.get(

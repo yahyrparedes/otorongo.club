@@ -20,7 +20,7 @@ from django.conf.urls.static import static
 
 from votes.views import index, ingresos_2021, bienes_2021, candidato_2021,\
     search, sentencias_2021, partidos_sentencias_2021, sentencias_2021_json,\
-    ingresos_2021_json
+    ingresos_2021_json, bienes_2021_json
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,6 +29,7 @@ urlpatterns = [
     path('2021/ingresos/', ingresos_2021),
     path('2021/json/ingresos/', ingresos_2021_json),
     path('2021/bienes/', bienes_2021),
+    path('2021/json/bienes/', bienes_2021_json),
     path('2021/sentencias/', sentencias_2021),
     path('2021/json/sentencias', sentencias_2021_json),
     path('2021/sentencias/<str:org_id>/', sentencias_2021),
