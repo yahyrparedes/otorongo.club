@@ -204,6 +204,20 @@ def partidos_sentencias_2021(request):
     )
 
 
+def partidos_sentencias_2021_json(request):
+    orgs = CompiledOrg.objects.all().order_by('-total_sentencias')
+    
+    data = []
+    for org in orgs:
+        obj = {}
+        obj['nombre'] = org.name
+        obj['total_antecedentes'] = org.total_sentencias
+        obj['antecedentes_penales'] = org.total_sentencia_penal
+        obj['antecedentes_obligaciones'] = org.total_sentencia_obliga
+        data.append(obj)
+
+    return JsonResponse(data, safe=False)
+
 def partido_2021(request, org_id):
     context, election = make_context()
     context['candidates'] = CompiledPerson.objects.filter(
