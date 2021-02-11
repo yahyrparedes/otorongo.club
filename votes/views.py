@@ -1,8 +1,9 @@
 from django.contrib.postgres.search import SearchQuery
 from django.core.paginator import InvalidPage
-from django.http import Http404
+from django.http import Http404, JsonResponse
 from django.shortcuts import render
 from django.conf import settings
+from django.core import serializers
 from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from django.views.decorators.csrf import csrf_exempt
 
@@ -63,6 +64,31 @@ def ingresos_2021(request):
         context,
     )
 
+def ingresos_2021_json(request):
+    election = make_context()[1]
+    persons = CompiledPerson.objects.filter(
+        person__elections=election,
+    ).order_by('-ingreso_total')
+
+    data = []
+    for candidate in persons:
+        has_ingreso = candidate.ingreso != None
+
+        obj = {}
+        obj['nombre'] = f"{candidate.person.last_names} "\
+            + candidate.person.first_names
+        obj['dni'] = candidate.person.dni_number
+        obj['partido'] = candidate.person.strOrganizacionPolitica
+        obj['total_ingreso'] = candidate.ingreso_total
+        obj['ingreso_publico'] = candidate.ingreso.decRemuBrutaPublico if has_ingreso else 0
+        obj['ingreso_privado'] = candidate.ingreso.decRemuBrutaPrivado if has_ingreso else 0
+        obj['renta_publico'] = candidate.ingreso.decRentaIndividualPublico if has_ingreso else 0
+        obj['renta_privado'] = candidate.ingreso.decRentaIndividualPrivado if has_ingreso else 0
+        obj['otro_ingreso_publico'] = candidate.ingreso.decOtroIngresoPublico if has_ingreso else 0
+        obj['otro_ingreso_privado'] = candidate.ingreso.decOtroIngresoPrivado if has_ingreso else 0
+        data.append(obj)
+
+    return JsonResponse(data, safe=False)
 
 def sentencias_2021(request, org_id=None):
     region = request.GET.get('region')
@@ -92,6 +118,26 @@ def sentencias_2021(request, org_id=None):
         context,
     )
 
+def sentencias_2021_json(request):
+    election = make_context()[1]
+    persons = CompiledPerson.objects.filter(
+        person__elections=election,
+    ).order_by('-sentencias_total')
+
+    data = []
+    for candidate in persons:
+        obj = {}
+        obj['nombre'] = f"{candidate.person.last_names} "\
+            + f"{candidate.person.first_names}"
+        obj['dni'] = candidate.person.dni_number
+        obj['partido'] = candidate.person.strOrganizacionPolitica
+        obj['total_antecedentes'] = candidate.sentencias_total
+        obj['antecedentes_penales'] = candidate.sentencias_penales
+        obj['antecedentes_obligaciones'] = candidate.sentencias_obliga
+        data.append(obj)
+
+    return JsonResponse(data, safe=False)
+
 
 def bienes_2021(request):
     context, election = make_context()
@@ -110,6 +156,25 @@ def bienes_2021(request):
         context,
     )
 
+def bienes_2021_json(request):
+    election = make_context()[1]
+    persons = CompiledPerson.objects.filter(
+        person__elections=election
+    ).order_by('-total_muebles_inmuebles')
+
+    data = []
+    for candidate in persons:
+        obj = {}
+        obj['nombre'] = f"{candidate.person.last_names} "\
+            + f"{candidate.person.first_names}"
+        obj['dni'] = candidate.person.dni_number
+        obj['partido'] = candidate.person.strOrganizacionPolitica
+        obj['total_muebles_inmuebles'] = candidate.total_muebles_inmuebles
+        obj['muebles'] = candidate.muebles
+        obj['inmuebles'] = candidate.inmuebles
+        data.append(obj)
+
+    return JsonResponse(data, safe=False)
 
 def make_context():
     election = Elections.objects.get(
@@ -137,6 +202,20 @@ def partidos_sentencias_2021(request):
         context,
     )
 
+
+def partidos_sentencias_2021_json(request):
+    orgs = CompiledOrg.objects.all().order_by('-total_sentencias')
+    
+    data = []
+    for org in orgs:
+        obj = {}
+        obj['nombre'] = org.name
+        obj['total_antecedentes'] = org.total_sentencias
+        obj['antecedentes_penales'] = org.total_sentencia_penal
+        obj['antecedentes_obligaciones'] = org.total_sentencia_obliga
+        data.append(obj)
+
+    return JsonResponse(data, safe=False)
 
 def partido_2021(request, org_id):
     context, election = make_context()

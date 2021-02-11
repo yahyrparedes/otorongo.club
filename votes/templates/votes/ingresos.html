@@ -8,6 +8,8 @@
 {% block content %}
   <h3>Lista de candidatos a elecciones generales 2021 ordenados por remuneración declarada</h3>
 
+  {% include "votes/export.html" with href="/2021/json/ingresos" %}
+
   <div class="table-responsive">
     <table class="table table-striped">
       <thead>
