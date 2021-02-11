@@ -34,7 +34,9 @@
       {% for org in orgs %}
         <tr>
           <td>
-            <a href="/2021/sentencias/{{ org.idOrganizacionPolitica }}/">{{ org.name }}</a>
+            <a href="/2021/sentencias/{{ org.idOrganizacionPolitica }}/">
+              {{ org.name }} - {{ org.postula_distrito }}
+            </a>
           </td>
           <td>
             <b>{{ org.total_sentencias|intcomma }}</b>

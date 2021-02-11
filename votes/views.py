@@ -190,7 +190,7 @@ def partidos_sentencias_2021(request):
     orgs = CompiledOrg.objects.all().order_by('-total_sentencias')
 
     if region and region == 'TODAS':
-        orgs = orgs.filter(postula_distrito__isnull=True)
+        orgs = orgs.filter(postula_distrito__isnull=False).exclude(postula_distrito=' ')
     elif region:
         orgs = orgs.filter(postula_distrito=region)
 
