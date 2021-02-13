@@ -25,11 +25,16 @@ services:
     image: otorongo/otorongo_app
     command: |
       /wait_for_it.sh db:5432 -t 0 -- gunicorn
-      --workers 8
+      --workers 6
+      --threads 6
       --timeout 120
+      --graceful-timeout 30
       --worker-class aiohttp.worker.GunicornWebWorker
       --log-level debug
-      --error-logfile=-
+      --error-logfile=/tmp/gunicorn_error_log
+      --log-file=/tmp/gunicorn_log
+      --access-logfile=/tmp/gunicorn_access_log
+      --capture-output
       --preload
       -b 0.0.0.0:8000 otorongo.wsgi
     volumes:
