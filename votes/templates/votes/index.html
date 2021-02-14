@@ -1,4 +1,5 @@
 {% extends 'votes/base.html' %}
+{% load static %}
 
 {% block title %}
   Otorongo.club
@@ -25,4 +26,12 @@
     <li>Lista de candidatos con <a href="/2021/sentencias/">mayor número de antecedentes</a></li>
     <li>Lista de organizaciones políticas con <a href="/2021/partidos/sentencias/">mayor número de antecedentes</a></li>
   </ol>
+
+  <p>
+    <br />
+    <h4>Otorongo.club es presentado por La Encerrona</h4>
+    <a href="https://www.patreon.com/ocram">
+      <img src="{% static 'votes/img/sponsor_encerrona.jpg' %}" width="300px" />
+    </a>
+  </p>
 {% endblock content %}
