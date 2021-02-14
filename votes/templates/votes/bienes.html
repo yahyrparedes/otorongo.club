@@ -80,7 +80,7 @@
             <li class="page-item">
               <a
                 aria-label="Previous"
-                href="?page={{ page.previous_page_number }}"
+                href="?page={{ page.previous_page_number }}{% if region %}&region={{ region }}{% endif %}"
                 class="page-link"
               >
                 <span aria-hidden="true">&laquo;</span>
@@ -90,17 +90,17 @@
 
           {% for i in page.paginator.paginate_sections %}
             {% if page.number == i %}
-              <li class="active page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+              <li class="active page-item"><a class="page-link" href="?page={{ i }}{% if region %}&region={{ region }}{% endif %}">{{ i }}</a></li>
             {% elif i == None %}
               <li class="disabled page-item"><a class="page-link" href="#">…</a></li>
             {% else %}
-              <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+              <li class="page-item"><a class="page-link" href="?page={{ i }}{% if region %}&region={{ region }}{% endif %}">{{ i }}</a></li>
             {% endif %}
           {% endfor %}
 
           {% if page.has_next %}
             <li class="page-item">
-              <a aria-label="Next" class="page-link" href="?page={{ page.next_page_number }}">
+              <a aria-label="Next" class="page-link" href="?page={{ page.next_page_number }}{% if region %}&region={{ region }}{% endif %}">
                 <span aria-hidden="true">&raquo;</span>
               </a>
             </li>
