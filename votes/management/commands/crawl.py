@@ -157,6 +157,31 @@ def crawl_lists_candidates():
             print(f"created {obj}")
 
 
+def update_distrito_postula():
+    election = Elections.objects.get(
+        name='Elecciones Generales 2021'
+    )
+    url = "https://plataformaelectoral.jne.gob.pe/PresentacionEstadistica/GetAvanzadaCanditados"
+    persons = Person.objects.filter(elections=election, strPostulaDistrito="NoDefinida")
+
+    for person in persons:
+        payload = {
+            "bTieneSentenciasCiviles": "0",
+            "bTieneSentenciasPenales": "0",
+            "cargoEleccions": [],
+            "idEducacion": 0,
+            "idEstadosCanPer": 0,
+            "idOrganizacionPolitica": 0,
+            "idProcesoElectoral": 110,
+            "idTipoElecion": 0,
+            "strDatosPersonales": "",
+            "strDocumentoIdentidad": person.dni_number,
+            "strUbigeo": None,
+        }
+        res = requests.post(url, data=payload, timeout=10)
+        # TODO:  this does not work yet
+
+
 def update_candidates_in_lists():
     """Search our stored Expedientes and search for candidates that we dont have
     in our database

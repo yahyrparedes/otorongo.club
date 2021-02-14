@@ -105,7 +105,7 @@ def sentencias_2021(request, org_id=None):
     elif region:
         persons = persons.filter(person__strPostulaDistrito=region)
 
-    if org_id:
+    if org_id and org_id != 'None':
         persons = persons.filter(person__idOrganizacionPolitica=org_id)
         org = CompiledOrg.objects.filter(idOrganizacionPolitica=org_id).first()
         context['org_name'] = org.name
@@ -136,7 +136,6 @@ def sentencias_2021_json(request):
             + f"{candidate.person.first_names}"
         obj['dni'] = candidate.person.dni_number
         obj['partido'] = candidate.person.strOrganizacionPolitica
-        # obj['postula_distrito'] = candidate.person.strPostulaDistrito
         obj['total_antecedentes'] = candidate.sentencias_total
         obj['antecedentes_penales'] = candidate.sentencias_penales
         obj['antecedentes_obligaciones'] = candidate.sentencias_obliga
