@@ -45,6 +45,7 @@ def search(request):
 
 
 def ingresos_2021(request):
+    region = request.GET.get('region')
     election = Elections.objects.get(
         name='Elecciones Generales 2021'
     )
@@ -54,9 +55,13 @@ def ingresos_2021(request):
         person__elections=election,
     ).order_by('-ingreso_total')
 
+    if region:
+        persons = persons.filter(person__strPostulaDistrito=region)
+
     paginator, page = do_pagination(request, persons)
     context['candidates'] = paginator
     context['page'] = page
+    context['region'] = region
 
     return render(
         request,
