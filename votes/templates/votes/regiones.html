@@ -15,6 +15,14 @@
       Todas las regiones
     </option>
     <option
+      value="NoDefinida"
+      {% if region == "NoDefinida" %}
+      selected
+      {% endif %}
+    >
+      Región no definida
+    </option>
+    <option
       value="AMAZONAS"
       {% if region == "AMAZONAS" %}
       selected

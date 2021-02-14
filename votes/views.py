@@ -1,3 +1,5 @@
+from operator import itemgetter
+
 from django.contrib.postgres.search import SearchQuery
 from django.core.paginator import InvalidPage
 from django.http import Http404, JsonResponse
@@ -98,11 +100,12 @@ def sentencias_2021(request, org_id=None):
         person__elections=election,
     ).order_by('-sentencias_total')
 
-    if region and region == 'TODAS':
-        pass
+    if region and region == "TODAS":
+        persons = persons.exclude(person__strPostulaDistrito="NoDefinida")
     elif region:
         persons = persons.filter(person__strPostulaDistrito=region)
-    elif org_id:
+
+    if org_id:
         persons = persons.filter(person__idOrganizacionPolitica=org_id)
         org = CompiledOrg.objects.filter(idOrganizacionPolitica=org_id).first()
         context['org_name'] = org.name
@@ -179,6 +182,7 @@ def bienes_2021_json(request):
 
     return JsonResponse(data, safe=False)
 
+
 def make_context():
     election = Elections.objects.get(
         name='Elecciones Generales 2021'
@@ -193,7 +197,29 @@ def partidos_sentencias_2021(request):
     orgs = CompiledOrg.objects.all().order_by('-total_sentencias')
 
     if region and region == 'TODAS':
-        orgs = orgs.filter(postula_distrito__isnull=False).exclude(postula_distrito=' ')
+        orgs = orgs.exclude(postula_distrito='NoDefinida')
+        # aggregate all regions in one entry
+        output = dict()
+
+        for org in orgs:
+            if org.name not in output:
+                output[org.name] = dict()
+                output[org.name]['name'] = org.name
+                output[org.name]['total_sentencias'] = 0
+                output[org.name]['total_sentencia_penal'] = 0
+                output[org.name]['total_sentencia_obliga'] = 0
+                output[org.name]['idOrganizacionPolitica'] = org.idOrganizacionPolitica
+
+            output[org.name]['total_sentencias'] += org.total_sentencias
+            output[org.name]['total_sentencia_penal'] += org.total_sentencia_penal
+            output[org.name]['total_sentencia_obliga'] += org.total_sentencia_obliga
+        output = sorted(
+            [value for k, value in output.items()],
+            key=itemgetter('total_sentencias'),
+            reverse=True,
+        )
+        orgs = output
+
     elif region:
         orgs = orgs.filter(postula_distrito=region)
 

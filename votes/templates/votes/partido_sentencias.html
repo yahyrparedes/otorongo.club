@@ -35,7 +35,11 @@
         <tr>
           <td>
             <a href="/2021/sentencias/{{ org.idOrganizacionPolitica }}/">
-              {{ org.name }} - {{ org.postula_distrito }}
+              {{ org.name }}
+              {% if org.postula_distrito %}
+                -
+              {% endif %}
+              {{ org.postula_distrito }}
             </a>
           </td>
           <td>
