@@ -292,7 +292,7 @@ def candidato_2021(request, dni):
 def robots_txt(request):
     lines = [
         "User-Agent: *",
-        "Disallow: /json/",
+        "Disallow: /2021/json/",
     ]
     return HttpResponse("\n".join(lines).encode('utf-8'),
         content_type="text/plain")
