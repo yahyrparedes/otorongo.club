@@ -90,6 +90,7 @@ def ingresos_2021_json(request):
 
     return JsonResponse(data, safe=False)
 
+
 def sentencias_2021(request, org_id=None):
     region = request.GET.get('region')
     context, election = make_context()
@@ -118,6 +119,7 @@ def sentencias_2021(request, org_id=None):
         context,
     )
 
+
 def sentencias_2021_json(request):
     election = make_context()[1]
     persons = CompiledPerson.objects.filter(
@@ -131,6 +133,7 @@ def sentencias_2021_json(request):
             + f"{candidate.person.first_names}"
         obj['dni'] = candidate.person.dni_number
         obj['partido'] = candidate.person.strOrganizacionPolitica
+        # obj['postula_distrito'] = candidate.person.strPostulaDistrito
         obj['total_antecedentes'] = candidate.sentencias_total
         obj['antecedentes_penales'] = candidate.sentencias_penales
         obj['antecedentes_obligaciones'] = candidate.sentencias_obliga
@@ -213,6 +216,7 @@ def partidos_sentencias_2021_json(request):
         obj['total_antecedentes'] = org.total_sentencias
         obj['antecedentes_penales'] = org.total_sentencia_penal
         obj['antecedentes_obligaciones'] = org.total_sentencia_obliga
+        obj['distrito'] = org.postula_distrito
         data.append(obj)
 
     return JsonResponse(data, safe=False)
