@@ -140,15 +140,20 @@ def sentencias_2021_json(request):
 
 
 def bienes_2021(request):
+    region = request.GET.get('region')
     context, election = make_context()
 
     persons = CompiledPerson.objects.filter(
         person__elections=election
     ).order_by('-total_muebles_inmuebles')
 
+    if region:
+        persons = persons.filter(person__strPostulaDistrito=region)
+
     paginator, page = do_pagination(request, persons)
     context['candidates'] = paginator
     context['page'] = page
+    context['region'] = region
 
     return render(
         request,
