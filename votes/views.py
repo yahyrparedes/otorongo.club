@@ -1,11 +1,12 @@
 from django.contrib.postgres.search import SearchQuery
 from django.core.paginator import InvalidPage
-from django.http import Http404, JsonResponse
+from django.http import Http404, JsonResponse, HttpResponse
 from django.shortcuts import render
 from django.conf import settings
 from django.core import serializers
 from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_GET
 
 from votes.models import Person, Elections, Ingresos, BienMueble, BienInmueble, \
     CompiledPerson, CompiledOrg, EduBasica, EduNoUniversitaria, EduTecnica, \
@@ -285,6 +286,16 @@ def candidato_2021(request, dni):
         'votes/candidate.html',
         context,
     )
+
+
+@require_GET
+def robots_txt(request):
+    lines = [
+        "User-Agent: *",
+        "Disallow: /json/",
+    ]
+    return HttpResponse("\n".join(lines).encode('utf-8'),
+        content_type="text/plain")
 
 
 def do_pagination(request, all_items):
