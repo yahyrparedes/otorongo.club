@@ -2,12 +2,13 @@ from operator import itemgetter
 
 from django.contrib.postgres.search import SearchQuery
 from django.core.paginator import InvalidPage
-from django.http import Http404, JsonResponse
+from django.http import Http404, JsonResponse, HttpResponse
 from django.shortcuts import render
 from django.conf import settings
 from django.core import serializers
 from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_GET
 
 from votes.models import Person, Elections, Ingresos, BienMueble, BienInmueble, \
     CompiledPerson, CompiledOrg, EduBasica, EduNoUniversitaria, EduTecnica, \
@@ -47,6 +48,7 @@ def search(request):
 
 
 def ingresos_2021(request):
+    region = request.GET.get('region')
     election = Elections.objects.get(
         name='Elecciones Generales 2021'
     )
@@ -56,9 +58,13 @@ def ingresos_2021(request):
         person__elections=election,
     ).order_by('-ingreso_total')
 
+    if region:
+        persons = persons.filter(person__strPostulaDistrito=region)
+
     paginator, page = do_pagination(request, persons)
     context['candidates'] = paginator
     context['page'] = page
+    context['region'] = region
 
     return render(
         request,
@@ -145,15 +151,20 @@ def sentencias_2021_json(request):
 
 
 def bienes_2021(request):
+    region = request.GET.get('region')
     context, election = make_context()
 
     persons = CompiledPerson.objects.filter(
         person__elections=election
     ).order_by('-total_muebles_inmuebles')
 
+    if region:
+        persons = persons.filter(person__strPostulaDistrito=region)
+
     paginator, page = do_pagination(request, persons)
     context['candidates'] = paginator
     context['page'] = page
+    context['region'] = region
 
     return render(
         request,
@@ -304,6 +315,16 @@ def candidato_2021(request, dni):
         'votes/candidate.html',
         context,
     )
+
+
+@require_GET
+def robots_txt(request):
+    lines = [
+        "User-Agent: *",
+        "Disallow: /2021/json/",
+    ]
+    return HttpResponse("\n".join(lines).encode('utf-8'),
+        content_type="text/plain")
 
 
 def do_pagination(request, all_items):
