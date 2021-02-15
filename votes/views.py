@@ -158,7 +158,9 @@ def bienes_2021(request):
         person__elections=election
     ).order_by('-total_muebles_inmuebles')
 
-    if region:
+    if region and region == "TODAS":
+        persons = persons.exclude(person__strPostulaDistrito="NoDefinida")
+    elif region:
         persons = persons.filter(person__strPostulaDistrito=region)
 
     paginator, page = do_pagination(request, persons)
@@ -171,6 +173,7 @@ def bienes_2021(request):
         'votes/bienes.html',
         context,
     )
+
 
 def bienes_2021_json(request):
     election = make_context()[1]

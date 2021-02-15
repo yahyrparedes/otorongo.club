@@ -8,6 +8,17 @@
 {% block content %}
   <h3>Lista de candidatos a elecciones generales 2021 ordenados por número de antecedentes declarados</h3>
 
+  <div class="row ml-1">
+    Los candidatos en "Región no definida" son aquellos que postulan a cargos:
+  </div>
+  <div class="row">
+    <ul>
+      <li>Presidencia de la República</li>
+      <li>Vice Presidencia de la República</li>
+      <li>Parlamento Andino</li>
+    </ul>
+  </div>
+
   <form
     action="/2021/sentencias/{{ org_id }}/"
     method="get"
