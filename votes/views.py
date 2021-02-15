@@ -241,7 +241,7 @@ def partidos_sentencias_2021_json(request):
         obj['total_antecedentes'] = org.total_sentencias
         obj['antecedentes_penales'] = org.total_sentencia_penal
         obj['antecedentes_obligaciones'] = org.total_sentencia_obliga
-        obj['distrito'] = org.postula_distrito
+        obj['region'] = org.postula_distrito
         data.append(obj)
 
     return JsonResponse(data, safe=False)
