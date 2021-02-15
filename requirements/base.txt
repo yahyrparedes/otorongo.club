@@ -9,3 +9,5 @@ django-extensions
 django-debug-toolbar
 django-environ
 twitterbot2==0.0.5
+ipython
+jedi==0.17.2
