@@ -99,7 +99,8 @@ def ingresos_2021_json(request):
     return JsonResponse(data, safe=False)
 
 
-def sentencias_2021(request, org_id=None):
+def sentencias_2021(request):
+    org_id = request.GET.get('org')
     region = request.GET.get('region')
     context, election = make_context()
     persons = CompiledPerson.objects.filter(
@@ -115,11 +116,11 @@ def sentencias_2021(request, org_id=None):
         persons = persons.filter(person__idOrganizacionPolitica=org_id)
         org = CompiledOrg.objects.filter(idOrganizacionPolitica=org_id).first()
         context['org_name'] = org.name
+        context['org_id'] = org_id
 
     paginator, page = do_pagination(request, persons)
     context['candidates'] = paginator
     context['page'] = page
-    context['org_id'] = org_id
     context['region'] = region
 
     return render(

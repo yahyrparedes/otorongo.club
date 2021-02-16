@@ -45,7 +45,7 @@
       {% for org in orgs %}
         <tr>
           <td>
-            <a href="/2021/sentencias/{{ org.idOrganizacionPolitica }}/">
+            <a href="/2021/sentencias/?org={{ org.idOrganizacionPolitica }}">
               {{ org.name }}
               {% if org.postula_distrito %}
                 -

@@ -20,12 +20,15 @@
   </div>
 
   <form
-    action="/2021/sentencias/{{ org_id }}/"
+    action="/2021/sentencias/"
     method="get"
     role="filter"
     class="form-inline mb-0"
   >
     {% include 'votes/regiones.html' %}
+    {% if org_id %}
+    <input type="hidden" name="org" value="{{ org_id }}">
+    {% endif %}
   </form>
 
   {% if org_name %}
