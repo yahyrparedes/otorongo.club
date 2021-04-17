@@ -5,8 +5,8 @@ from django.core.paginator import InvalidPage
 from django.http import Http404, JsonResponse, HttpResponse
 from django.shortcuts import render
 from django.conf import settings
-from django.core import serializers
 from django.core.cache.backends.base import DEFAULT_TIMEOUT
+from django.views.decorators.cache import cache_page
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_GET
 
@@ -26,6 +26,7 @@ def index(request):
     )
 
 
+@cache_page(60 * 60 * 5)  # 5 hours
 @csrf_exempt
 def search(request):
     context, election = make_context()
@@ -47,6 +48,7 @@ def search(request):
     )
 
 
+@cache_page(60 * 60 * 5)  # 5 hours
 def ingresos_2021(request):
     region = request.GET.get('region')
     election = Elections.objects.get(
@@ -72,6 +74,8 @@ def ingresos_2021(request):
         context,
     )
 
+
+@cache_page(60 * 60 * 5)  # 5 hours
 def ingresos_2021_json(request):
     election = make_context()[1]
     persons = CompiledPerson.objects.filter(
@@ -99,6 +103,7 @@ def ingresos_2021_json(request):
     return JsonResponse(data, safe=False)
 
 
+@cache_page(60 * 60 * 5)  # 5 hours
 def sentencias_2021(request):
     org_id = request.GET.get('org')
     region = request.GET.get('region')
@@ -130,6 +135,7 @@ def sentencias_2021(request):
     )
 
 
+@cache_page(60 * 60 * 5)  # 5 hours
 def sentencias_2021_json(request):
     election = make_context()[1]
     persons = CompiledPerson.objects.filter(
@@ -151,6 +157,7 @@ def sentencias_2021_json(request):
     return JsonResponse(data, safe=False)
 
 
+@cache_page(60 * 60 * 5)  # 5 hours
 def bienes_2021(request):
     region = request.GET.get('region')
     context, election = make_context()
@@ -176,6 +183,7 @@ def bienes_2021(request):
     )
 
 
+@cache_page(60 * 60 * 5)  # 5 hours
 def bienes_2021_json(request):
     election = make_context()[1]
     persons = CompiledPerson.objects.filter(
@@ -205,6 +213,7 @@ def make_context():
     return context, election
 
 
+@cache_page(60 * 60 * 5)  # 5 hours
 def partidos_sentencias_2021(request):
     region = request.GET.get('region')
     context, election = make_context()
@@ -246,6 +255,7 @@ def partidos_sentencias_2021(request):
     )
 
 
+@cache_page(60 * 60 * 5)  # 5 hours
 def partidos_sentencias_2021_json(request):
     orgs = CompiledOrg.objects.all().order_by('-total_sentencias')
     
@@ -261,6 +271,8 @@ def partidos_sentencias_2021_json(request):
 
     return JsonResponse(data, safe=False)
 
+
+@cache_page(60 * 60 * 5)  # 5 hours
 def partido_2021(request, org_id):
     context, election = make_context()
     context['candidates'] = CompiledPerson.objects.filter(
@@ -274,6 +286,7 @@ def partido_2021(request, org_id):
     )
 
 
+@cache_page(60 * 60 * 5)  # 5 hours
 def candidato_2021(request, dni):
     context, election = make_context()
     person = Person.objects.filter(
