@@ -58,7 +58,7 @@ def ingresos_2021(request):
 
     persons = CompiledPerson.objects.filter(
         person__elections=election,
-    ).order_by('-ingreso_total')
+    ).prefetch_related("person").order_by('-ingreso_total')
 
     if region:
         persons = persons.filter(person__strPostulaDistrito=region)
@@ -80,7 +80,7 @@ def ingresos_2021_json(request):
     election = make_context()[1]
     persons = CompiledPerson.objects.filter(
         person__elections=election,
-    ).order_by('-ingreso_total')
+    ).prefetch_related("person").order_by('-ingreso_total')
 
     data = []
     for candidate in persons:
@@ -110,7 +110,7 @@ def sentencias_2021(request):
     context, election = make_context()
     persons = CompiledPerson.objects.filter(
         person__elections=election,
-    ).order_by('-sentencias_total')
+    ).prefetch_related("person").order_by('-sentencias_total')
 
     if region and region == "TODAS":
         persons = persons.exclude(person__strPostulaDistrito="NoDefinida")
@@ -140,7 +140,7 @@ def sentencias_2021_json(request):
     election = make_context()[1]
     persons = CompiledPerson.objects.filter(
         person__elections=election,
-    ).order_by('-sentencias_total')
+    ).prefetch_related("person").order_by('-sentencias_total')
 
     data = []
     for candidate in persons:
@@ -164,7 +164,7 @@ def bienes_2021(request):
 
     persons = CompiledPerson.objects.filter(
         person__elections=election
-    ).order_by('-total_muebles_inmuebles')
+    ).prefetch_related("person").order_by('-total_muebles_inmuebles')
 
     if region and region == "TODAS":
         persons = persons.exclude(person__strPostulaDistrito="NoDefinida")
@@ -188,7 +188,7 @@ def bienes_2021_json(request):
     election = make_context()[1]
     persons = CompiledPerson.objects.filter(
         person__elections=election
-    ).order_by('-total_muebles_inmuebles')
+    ).prefetch_related("person").order_by('-total_muebles_inmuebles')
 
     data = []
     for candidate in persons:
