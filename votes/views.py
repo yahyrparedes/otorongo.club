@@ -48,7 +48,7 @@ def search(request):
     )
 
 
-# @cache_page(60 * 60 * 5)  # 5 hours
+@cache_page(60 * 60 * 5)  # 5 hours
 def ingresos_2021(request):
     region = request.GET.get('region')
     election = Elections.objects.get(
