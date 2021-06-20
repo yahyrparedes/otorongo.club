@@ -2,8 +2,7 @@ psycopg2-binary
 Django==3.1.8
 requests==2.25.1
 parsel==1.6.0
-gunicorn
-guicorn[gevent]
+gunicorn[gevent]
 django-redis
 django-extensions
 django-debug-toolbar
